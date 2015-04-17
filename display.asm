@@ -36,52 +36,7 @@ Standby:
 		sw $zero, 0xFFFF0000		# clear the button pushed bit
 		j Standby
 EndStandby:		
-		j begin
-
-##########################################################
-# AdjustDir  changes the players direction registers depending on the key pressed
-AdjustDir: 
-		lw $a0, 0xFFFF0004		# Load button pressed
-		
-AdjustDir_left_up:
-		bne $a0, 97, AdjustDir_left_down  # a
-		beq $s0, 0x02000000, Stop_left	# if you were going down then stop
-		ori $s0, $zero, 0x01000000	# up
-		j GetDir_done		
-
-AdjustDir_left_down:
-		bne $a0, 122, AdjustDir_right_up	# z
-		beq $s0, 0x01000000, Stop_left 	# if you were going up then stop
-		ori $s0, $zero, 0x02000000	# down
-		j GetDir_done
-		
-Stop_left:
-		or $s0, $zero, $zero		# no dir
-		j GetDir_done
-
-AdjustDir_right_up:
-		bne $a0, 107, AdjustDir_right_down # k
-		beq $s1, 0x02000000, Stop_right	# if you were going down then stop
-		ori $s1, $zero, 0x01000000	# up
-		j GetDir_done
-
-AdjustDir_right_down:
-		bne $a0, 109, AdjustDir_none	# m
-		beq $s1, 0x01000000, Stop_right # if you were going up then stop
-		ori $s1, $zero, 0x02000000	# down
-		j GetDir_done
-		
-Stop_right:
-		or $s1, $zero, $zero		# no dir
-		j GetDir_done
-
-AdjustDir_none:
-						# Do nothing
-AdjustDir_done:
-		jr $ra				# Return
-
-
-##########################################################
+		j Frame
 			
 Frame:
 	
@@ -201,6 +156,49 @@ POneGameLoss:
 PTwoGameLoss:
 		li $v0, 10
 		syscall
+		
+#################################################################################
+# AdjustDir  changes the players direction registers depending on the key pressed
+AdjustDir: 
+		lw $a0, 0xFFFF0004		# Load button pressed
+		
+AdjustDir_left_up:
+		bne $a0, 97, AdjustDir_left_down  # a
+		beq $s0, 0x02000000, Stop_left	# if you were going down then stop
+		ori $s0, $zero, 0x01000000	# up
+		j GetDir_done		
+
+AdjustDir_left_down:
+		bne $a0, 122, AdjustDir_right_up	# z
+		beq $s0, 0x01000000, Stop_left 	# if you were going up then stop
+		ori $s0, $zero, 0x02000000	# down
+		j GetDir_done
+		
+Stop_left:
+		or $s0, $zero, $zero		# no dir
+		j GetDir_done
+
+AdjustDir_right_up:
+		bne $a0, 107, AdjustDir_right_down # k
+		beq $s1, 0x02000000, Stop_right	# if you were going down then stop
+		ori $s1, $zero, 0x01000000	# up
+		j GetDir_done
+
+AdjustDir_right_down:
+		bne $a0, 109, AdjustDir_none	# m
+		beq $s1, 0x01000000, Stop_right # if you were going up then stop
+		ori $s1, $zero, 0x02000000	# down
+		j GetDir_done
+		
+Stop_right:
+		or $s1, $zero, $zero		# no dir
+		j GetDir_done
+
+AdjustDir_none:
+						# Do nothing
+AdjustDir_done:
+		jr $ra				# Return
+#################################################################################
 	
 				# CURRENTLY NOT USED		
 # $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
