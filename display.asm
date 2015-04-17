@@ -5,12 +5,12 @@
 	backgroundColour:	.word 0x00000000
 
 .text
-# s0-s2 store colors, s3 stores paddle one's position, s4 stores paddle two's position, 
+# s0 stores p1dir, s1 stores p2 dir, s2 is OPEN , s3 stores paddle one's position, s4 stores paddle two's position, 
 # s5 stores the balls x position, s6 stores the balls y position, #s7 stores the balls direction
 Main:
-		lw $s0, colourOne
-		lw $s1, colourTwo
-		lw $s2, ballColour
+		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
+		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
+		#s2 open
 		li $s3, 13
 		li $s4, 13
 		li $s5, 16
@@ -35,12 +35,12 @@ DrawObjects:
 
 		addi $a0, $zero, 0
 		addu $a1, $zero, $s3
-		addu $a2, $zero, $s0
+		lw $a2, $zero, coulourOne
 		jal DrawPaddle
 		
 		addi $a0, $zero, 31
 		addu $a1, $zero, $s4
-		addu $a2, $zero, $s1
+		lw $a2, colourTwo
 		jal DrawPaddle
 		
 		addu $a0, $zero, $s5
@@ -113,7 +113,8 @@ DrawBall:
 		addu $v0, $a0, $t0
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
-		sw $s2, ($v0)
+		lw $t0, ballColour # store the ball colour in a temporary
+		sw $t0, ($v0)
 		
 		jr $ra
 		
