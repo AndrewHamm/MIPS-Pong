@@ -16,7 +16,73 @@ Main:
 		li $s5, 16
 		li $s6, 16
 		li $s7, 0
+	
+# Wait and read buttons
+Begin_standby:
+		ori $t0, $zero, 0x00000005			# load 25 into the counter for a ~50 milisec standby
+	
+Standby:
+		blez $t0, EndStandby
+		li $a0, 10	#
+		li $v0, 32	# pause for 10 milisec
+		syscall		#
 		
+		addi $t0, $t0, -1 		# decrement counter
+		
+		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
+		blez $t1, Standby
+				
+		jal AdjustDir			# see what was pushed
+		sw $zero, 0xFFFF0000		# clear the button pushed bit
+		j Standby
+EndStandby:		
+		j begin
+
+##########################################################
+# AdjustDir  changes the players direction registers depending on the key pressed
+AdjustDir: 
+		lw $a0, 0xFFFF0004		# Load button pressed
+		
+GetDir_left_up:
+		bne $a0, 97, GetDir_left_down  # a
+		beq $s0, 0x02000000, Stop_p1	# if you were going down then stop
+		ori $s0, $zero, 0x01000000	# up
+		j GetDir_done		
+
+GetDir_left_down:
+		bne $a0, 122, GetDir_right_up	# z
+		beq $s0, 0x01000000, Stop_p1 	# if you were going up then stop
+		ori $s0, $zero, 0x02000000	# down
+		j GetDir_done
+		
+Stop_p1:
+		or $s0, $zero, $zero		# no dir
+		j GetDir_done
+
+GetDir_right_up:
+		bne $a0, 107, GetDir_right_down # k
+		beq $s1, 0x02000000, Stop_p2	# if you were going down then stop
+		ori $s1, $zero, 0x01000000	# up
+		j GetDir_done
+
+GetDir_right_down:
+		bne $a0, 109, GetDir_none	# m
+		beq $s1, 0x01000000, Stop_p2 	# if you were going up then stop
+		ori $s1, $zero, 0x02000000	# down
+		j GetDir_done
+		
+Stop_p2:
+		or $s1, $zero, $zero		# no dir
+		j GetDir_done
+
+GetDir_none:
+						# Do nothing
+GetDir_done:
+		jr $ra				# Return
+
+
+##########################################################
+			
 Frame:
 	
 		# Check what keyboard input has been
