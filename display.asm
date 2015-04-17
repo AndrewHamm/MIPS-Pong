@@ -40,7 +40,7 @@ EndStandby:
 			
 Frame:
 	
-		# Check what keyboard input has been
+		# Check what keyboard input was
 		# Move paddles accordingly
 		
 MoveBall:
