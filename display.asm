@@ -60,7 +60,7 @@ LeftCollsion:
 		bge $s6, $t0, PaddleHit
 		j POneGameLoss
 NoLeftCollision:
-		j Standby
+		j Begin_standby
 		
 PaddleHit: 
 		xor $s7, $s7, 1
