@@ -44,17 +44,17 @@ DrawObjects:
 CheckForCollisions:
 		bne $s5, 30, NoRightCollision
 RightCollision:
-		ble $s6, $s4, PaddleHit
-		addi $t0, $s4, -5
-		bge $s6, $t0, PaddleHit
-		j PTwoGameLoss
+		blt $s6, $s4, PTwoGameLoss
+		addi $t0, $s4, 5
+		bgt $s6, $t0, PTwoGameLoss
+		j PaddleHit
 NoRightCollision:
 		bne $s5, 1, NoLeftCollision
 LeftCollsion:
-		ble $s6, $s3, PaddleHit
-		addi $t0, $s3, -5
-		bge $s6, $t0, PaddleHit
-		j POneGameLoss
+		blt $s6, $s3, POneGameLoss
+		addi $t0, $s3, 5
+		bgt $s6, $t0, POneGameLoss
+		j PaddleHit
 NoLeftCollision:
 		j Begin_standby
 		
