@@ -31,7 +31,7 @@ DrawObjects:
 
 		addi $a0, $zero, 0
 		addu $a1, $zero, $s3
-		lw $a2, $zero, coulourOne
+		lw $a2, colourOne
 		jal DrawPaddle
 		
 		addi $a0, $zero, 31
@@ -144,33 +144,33 @@ AdjustDir_left_up:
 		bne $a0, 97, AdjustDir_left_down  # a
 		beq $s0, 0x02000000, Stop_left	# if you were going down then stop
 		ori $s0, $zero, 0x01000000	# up
-		j GetDir_done		
+		j AdjustDir_done		
 
 AdjustDir_left_down:
 		bne $a0, 122, AdjustDir_right_up	# z
 		beq $s0, 0x01000000, Stop_left 	# if you were going up then stop
 		ori $s0, $zero, 0x02000000	# down
-		j GetDir_done
+		j AdjustDir_done
 		
 Stop_left:
 		or $s0, $zero, $zero		# no dir
-		j GetDir_done
+		j AdjustDir_done
 
 AdjustDir_right_up:
 		bne $a0, 107, AdjustDir_right_down # k
 		beq $s1, 0x02000000, Stop_right	# if you were going down then stop
 		ori $s1, $zero, 0x01000000	# up
-		j GetDir_done
+		j AdjustDir_done
 
 AdjustDir_right_down:
 		bne $a0, 109, AdjustDir_none	# m
 		beq $s1, 0x01000000, Stop_right # if you were going up then stop
 		ori $s1, $zero, 0x02000000	# down
-		j GetDir_done
+		j AdjustDir_done
 		
 Stop_right:
 		or $s1, $zero, $zero		# no dir
-		j GetDir_done
+		j AdjustDir_done
 
 AdjustDir_none:
 						# Do nothing
