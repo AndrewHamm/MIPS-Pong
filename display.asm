@@ -23,12 +23,18 @@ DrawObjects:
 		addi $a0, $zero, 0
 		addu $a1, $zero, $s3
 		lw $a2, colourOne
+		or $a3, $zero, $s0
 		jal DrawPaddle
+		or $s3, $zero, $a1	# a1 has the new top position stored
+		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
 		addi $a0, $zero, 31
 		addu $a1, $zero, $s4
 		lw $a2, colourTwo
+		or $a3, $zero, $s1
 		jal DrawPaddle
+		or $s4, $zero, $a1	# a1 has the new top position stored
+		or $s1, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
 		addu $a0, $zero, $s5
 		addu $a1, $zero, $s6
@@ -76,9 +82,51 @@ Standby:
 EndStandby:		
 		j DrawObjects
 		
-# $a0 contains the paddles x position, $a1 contains paddles y-top position, $a2 contains paddle color
+# $a0 contains the paddles x position, $a1 contains paddles y-top position, $a2 contains paddle color, $a3 contains the direction
 # $t0 is the loop counter, $t1 is the current y coordinate, the x coordinate does not change
+# after completed $a1 "returns" aka has stored the new y-top position, $a3 "returns" the direction
+# careful to make sure nothing inbetween alters these  $a registers
 DrawPaddle:
+	# objective: look at the direction, draw a point on the correct side, erase a point on the correct side
+	beq $a3, 0x02000000, down
+	bne $a3, 0x01000000, NoMove
+	up:
+		# erase bottom point
+   		or $t2, $zero, $a2
+   		or $t1, $zero, $a1
+   		addi $a1, $a1, 5	# the bottom point
+		lw $a2, backgroundColour
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)   	# saves $ra on stack
+		jal DrawPoint
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4	# change stack back
+   		or $a1, $zero, $t1	# put back top y position
+   		or $a2, $zero, $t2	# put back colour
+   		
+		# move top y up (as long as its not at the top)
+		beq $a1, 0, NoMove
+		addi $a1, $a1, -1
+		j Move
+	down:
+		# erase top point
+		or $t1, $zero, $a2
+		lw $a2, backgroundColour
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)   	# saves $ra on stack
+		jal DrawPoint
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4	# change stack back
+   		or $a2, $zero, $t1	# put back colour
+   		
+		# move down top y (as long as bottom is not at bottom)
+		beq $a1, 26, NoMove	# height is 31 - 5 = 26
+		addi $a1, $a1, 1
+		j Move
+	NoMove:
+		# else do nothing, make sure the direction is nothing
+		or $a3, $zero, $zero
+	Move:
 		addi $t0, $zero, 6
 	StartPLoop:
 		subi $t0, $t0, 1
