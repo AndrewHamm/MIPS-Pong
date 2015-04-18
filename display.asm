@@ -36,13 +36,9 @@ Standby:
 		sw $zero, 0xFFFF0000		# clear the button pushed bit
 		j Standby
 EndStandby:		
-		j Frame
-			
-Frame:
-	
-		# Check what keyboard input was
-		# Move paddles accordingly
-		
+		j MoveBall			
+
+# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
 MoveBall:
 		beqz $s7, else
 		addi $s5, $s5, 1
@@ -50,7 +46,7 @@ MoveBall:
 	else:	
 		addi $s5, $s5, -1
 	endif:
-		
+
 DrawObjects:
 		jal ClearScreen
 
