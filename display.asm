@@ -62,7 +62,8 @@ DrawObjects:
 		
 		addu $a0, $zero, $s5
 		addu $a1, $zero, $s6
-		jal DrawBall
+		lw $a2, ballColour
+		jal DrawPoint
 		
 		# Check for collisions and react accordingly
 CheckForCollisions:
@@ -124,14 +125,14 @@ DrawPaddle:
 		jr $ra
 		nop
 		
-# $a0 contains x position, $a1 contains y position	
-DrawBall:
+# $a0 contains x position, $a1 contains y position, $a2 contains the colour	
+DrawPoint:
 		sll $t0, $a1, 5   # multiply y-coordinate by 32 (length of the field)
 		addu $v0, $a0, $t0
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
-		lw $t0, ballColour # store the ball colour in a temporary
-		sw $t0, ($v0)
+		# lw $t0, ballColour # store the ball colour in a temporary
+		sw $a2, ($v0)		# draw the colour to the location
 		
 		jr $ra
 		
