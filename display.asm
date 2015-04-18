@@ -15,28 +15,7 @@ Main:
 		li $s4, 13
 		li $s5, 16
 		li $s6, 16
-		li $s7, 0
-	
-# Wait and read buttons
-Begin_standby:
-		ori $t0, $zero, 0x00000005			# load 25 into the counter for a ~50 milisec standby
-	
-Standby:
-		blez $t0, EndStandby
-		li $a0, 10	#
-		li $v0, 32	# pause for 10 milisec
-		syscall		#
-		
-		addi $t0, $t0, -1 		# decrement counter
-		
-		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		blez $t1, Standby
-				
-		jal AdjustDir			# see what was pushed
-		sw $zero, 0xFFFF0000		# clear the button pushed bit
-		j Standby
-EndStandby:		
-		j MoveBall			
+		li $s7, 0			
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
 MoveBall:
@@ -85,24 +64,27 @@ NoLeftCollision:
 		
 PaddleHit: 
 		xor $s7, $s7, 1
-# TODO: Check for inturrupt method of implementation	
+		
+# Wait and read buttons
+Begin_standby:
+		ori $t0, $zero, 0x00000005			# load 25 into the counter for a ~50 milisec standby
+	
 Standby:
-		li $a0, 50
-		li $v0, 32
-		syscall
-			# addi $t0, $zero, 1000
-		# Set $t0 to whatever equals 1/30 of a second
-		# Check for keyboard input
-		# Record keyboard input
-			# subi $t0, $t0, 1
-			# beqz $t0, EndStandby
-			# j Standby
-EndStandby:
-		j Frame
+		blez $t0, EndStandby
+		li $a0, 10	#
+		li $v0, 32	# pause for 10 milisec
+		syscall		#
 		
+		addi $t0, $t0, -1 		# decrement counter
 		
-		li $v0, 10
-		syscall
+		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
+		blez $t1, Standby
+				
+		jal AdjustDir			# see what was pushed
+		sw $zero, 0xFFFF0000		# clear the button pushed bit
+		j Standby
+EndStandby:		
+		j MoveBall
 		
 # $a0 contains the paddles x position, $a1 contains paddles y-top position, $a2 contains paddle color
 # $t0 is the loop counter, $t1 is the current y coordinate, the x coordinate does not change
@@ -131,7 +113,6 @@ DrawPoint:
 		addu $v0, $a0, $t0
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
-		# lw $t0, ballColour # store the ball colour in a temporary
 		sw $a2, ($v0)		# draw the colour to the location
 		
 		jr $ra
