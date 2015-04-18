@@ -18,17 +18,8 @@ Main:
 		li $s7, 0			
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
-MoveBall:
-		beqz $s7, else
-		addi $s5, $s5, 1
-		j endif
-	else:	
-		addi $s5, $s5, -1
-	endif:
 
 DrawObjects:
-		jal ClearScreen
-
 		addi $a0, $zero, 0
 		addu $a1, $zero, $s3
 		lw $a2, colourOne
@@ -41,8 +32,7 @@ DrawObjects:
 		
 		addu $a0, $zero, $s5
 		addu $a1, $zero, $s6
-		lw $a2, ballColour
-		jal DrawPoint
+		jal MoveBall
 		
 		# Check for collisions and react accordingly
 CheckForCollisions:
@@ -67,7 +57,7 @@ PaddleHit:
 		
 # Wait and read buttons
 Begin_standby:
-		ori $t0, $zero, 0x00000005			# load 25 into the counter for a ~50 milisec standby
+		ori $t0, $zero, 0x00000002			# load 25 into the counter for a ~50 milisec standby
 	
 Standby:
 		blez $t0, EndStandby
@@ -84,7 +74,7 @@ Standby:
 		sw $zero, 0xFFFF0000		# clear the button pushed bit
 		j Standby
 EndStandby:		
-		j MoveBall
+		j DrawObjects
 		
 # $a0 contains the paddles x position, $a1 contains paddles y-top position, $a2 contains paddle color
 # $t0 is the loop counter, $t1 is the current y coordinate, the x coordinate does not change
@@ -106,6 +96,26 @@ DrawPaddle:
 	EndPLoop:		
 		jr $ra
 		nop
+
+# $a0 contains x position, $a1 contains y position	
+MoveBall:		
+		# draw over the last point
+		lw $a2, backgroundColour
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)   	# saves $ra on stack
+		jal DrawPoint
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4	# change stack back
+
+		beqz $s7, else 		# move the ball based on its direction
+		addi $s5, $s5, 1 
+		j endif
+	else:	
+		addi $s5, $s5, -1
+	endif:	
+		addu $a0, $zero, $s5
+		addu $a1, $zero, $s6
+		lw $a2, ballColour
 		
 # $a0 contains x position, $a1 contains y position, $a2 contains the colour	
 DrawPoint:
@@ -115,18 +125,6 @@ DrawPoint:
 		addu $v0, $v0, $gp
 		sw $a2, ($v0)		# draw the colour to the location
 		
-		jr $ra
-		
-ClearScreen:
-		lw $t0, backgroundColour
-		li $t1, 4096
-	StartCLoop:
-		subi $t1, $t1, 4
-		addu $t2, $t1, $gp
-		sw $t0, ($t2)
-		beqz $t1, EndCLoop
-		j StartCLoop
-	EndCLoop:
 		jr $ra
 		
 POneGameLoss:
