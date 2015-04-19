@@ -13,14 +13,14 @@ Main:
 		#s2 open
 		li $s3, 13
 		li $s4, 13
-		li $s5, 16
+		li $s5, 32
 		li $s6, 16
 		li $s7, 0			
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
 
 DrawObjects:
-		addi $a0, $zero, 0
+		addi $a0, $zero, 13
 		addu $a1, $zero, $s3
 		lw $a2, colourOne
 		or $a3, $zero, $s0
@@ -28,7 +28,7 @@ DrawObjects:
 		or $s3, $zero, $a1	# a1 has the new top position stored
 		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
-		addi $a0, $zero, 31
+		addi $a0, $zero, 50
 		addu $a1, $zero, $s4
 		lw $a2, colourTwo
 		or $a3, $zero, $s1
@@ -42,20 +42,22 @@ DrawObjects:
 		
 		# Check for collisions and react accordingly
 CheckForCollisions:
-		bne $s5, 30, NoRightCollision
-RightCollision:
-		blt $s6, $s4, PTwoGameLoss
-		addi $t0, $s4, 5
-		bgt $s6, $t0, PTwoGameLoss
-		j PaddleHit
-NoRightCollision:
-		bne $s5, 1, NoLeftCollision
-LeftCollsion:
-		blt $s6, $s3, POneGameLoss
+		beq $s5, 0, POneGameLoss
+		beq $s5, 63, PTwoGameLoss
+		bne $s5, 14, NoLeftCollision
+LeftCollision:
+		blt $s6, $s3, Begin_standby
 		addi $t0, $s3, 5
-		bgt $s6, $t0, POneGameLoss
+		bgt $s6, $t0, Begin_standby
 		j PaddleHit
 NoLeftCollision:
+		bne $s5, 49, NoRightCollision
+RightCollision:
+		blt $s6, $s4, Begin_standby
+		addi $t0, $s4, 5
+		bgt $s6, $t0, Begin_standby
+		j PaddleHit
+NoRightCollision:
 		j Begin_standby
 		
 PaddleHit: 
@@ -133,7 +135,7 @@ DrawPaddle:
 		addu $t1, $a1, $t0
 		
 		# Converts to memory address
-		sll $t1, $t1, 5   # multiply y-coordinate by 32 (length of the field)
+		sll $t1, $t1, 6   # multiply y-coordinate by 64 (length of the field)
 		addu $v0, $a0, $t1
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
@@ -167,7 +169,7 @@ MoveBall:
 		
 # $a0 contains x position, $a1 contains y position, $a2 contains the colour	
 DrawPoint:
-		sll $t0, $a1, 5   # multiply y-coordinate by 32 (length of the field)
+		sll $t0, $a1, 6   # multiply y-coordinate by 64 (length of the field)
 		addu $v0, $a0, $t0
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
@@ -227,7 +229,7 @@ AdjustDir_done:
 				# CURRENTLY NOT USED		
 # $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
 CoordinateToMemAddress:
-		sll $t0, $a1, 5   # multiply y-coordinate by 32 (length of the field)
+		sll $t0, $a1, 6   # multiply y-coordinate by 64 (length of the field)
 		addu $v0, $a0, $t0
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
