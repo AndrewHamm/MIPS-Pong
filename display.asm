@@ -20,24 +20,24 @@ Main:
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
 
 DrawObjects:
-		addi $a0, $zero, 13
-		addu $a1, $zero, $s3
+		li $a0, 13
+		or $a1, $zero, $s3
 		lw $a2, colourOne
 		or $a3, $zero, $s0
 		jal DrawPaddle
 		or $s3, $zero, $a1	# a1 has the new top position stored
 		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
-		addi $a0, $zero, 50
-		addu $a1, $zero, $s4
+		li $a0, 50
+		or $a1, $zero, $s4
 		lw $a2, colourTwo
 		or $a3, $zero, $s1
 		jal DrawPaddle
 		or $s4, $zero, $a1	# a1 has the new top position stored
 		or $s1, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
-		addu $a0, $zero, $s5
-		addu $a1, $zero, $s6
+		or $a0, $zero, $s5
+		or $a1, $zero, $s6
 		jal MoveBall
 		
 		# Check for collisions and react accordingly
@@ -129,7 +129,7 @@ DrawPaddle:
 		# else do nothing, make sure the direction is nothing
 		or $a3, $zero, $zero
 	Move:
-		addi $t0, $zero, 6
+		li $t0, 6
 	StartPLoop:
 		subi $t0, $t0, 1
 		addu $t1, $a1, $t0
@@ -163,8 +163,8 @@ MoveBall:
 	else:	
 		addi $s5, $s5, -1
 	endif:	
-		addu $a0, $zero, $s5
-		addu $a1, $zero, $s6
+		or $a0, $zero, $s5
+		or $a1, $zero, $s6
 		lw $a2, ballColour
 		
 # $a0 contains x position, $a1 contains y position, $a2 contains the colour	
@@ -191,33 +191,33 @@ AdjustDir:
 AdjustDir_left_up:
 		bne $a0, 97, AdjustDir_left_down  # a
 		beq $s0, 0x02000000, Stop_left	# if you were going down then stop
-		ori $s0, $zero, 0x01000000	# up
+		li $s0, 0x01000000	# up
 		j AdjustDir_done		
 
 AdjustDir_left_down:
 		bne $a0, 122, AdjustDir_right_up	# z
 		beq $s0, 0x01000000, Stop_left 	# if you were going up then stop
-		ori $s0, $zero, 0x02000000	# down
+		li $s0, 0x02000000	# down
 		j AdjustDir_done
 		
 Stop_left:
-		or $s0, $zero, $zero		# no dir
+		li $s0, 0x00000000		# no dir
 		j AdjustDir_done
 
 AdjustDir_right_up:
 		bne $a0, 107, AdjustDir_right_down # k
 		beq $s1, 0x02000000, Stop_right	# if you were going down then stop
-		ori $s1, $zero, 0x01000000	# up
+		li $s1, 0x01000000	# up
 		j AdjustDir_done
 
 AdjustDir_right_down:
 		bne $a0, 109, AdjustDir_none	# m
 		beq $s1, 0x01000000, Stop_right # if you were going up then stop
-		ori $s1, $zero, 0x02000000	# down
+		li $s1, 0x02000000	# down
 		j AdjustDir_done
 		
 Stop_right:
-		or $s1, $zero, $zero		# no dir
+		li $s1, 0x00000000		# no dir
 		j AdjustDir_done
 
 AdjustDir_none:
