@@ -5,57 +5,57 @@
 	backgroundColour:	.word 0x00000000
 
 .text
-# s0 stores p1dir, s1 stores p2 dir, s2 is OPEN , s3 stores paddle one's position, s4 stores paddle two's position, 
-# s5 stores the balls x position, s6 stores the balls y position, #s7 stores the balls direction
+# s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity, s3 stores balls y-velocity, s4 stores paddle one's position, 
+# s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
 Main:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		#s2 open
-		li $s3, 13
+		li $s2, 1
+		li $s3, 0
 		li $s4, 13
-		li $s5, 32
-		li $s6, 16
-		li $s7, 0			
+		li $s5, 13
+		li $s6, 32
+		li $s7, 16
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
 
 DrawObjects:
 		li $a0, 13
-		or $a1, $zero, $s3
+		or $a1, $zero, $s4
 		lw $a2, colourOne
 		or $a3, $zero, $s0
 		jal DrawPaddle
-		or $s3, $zero, $a1	# a1 has the new top position stored
+		or $s4, $zero, $a1	# a1 has the new top position stored
 		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
 		li $a0, 50
-		or $a1, $zero, $s4
+		or $a1, $zero, $s5
 		lw $a2, colourTwo
 		or $a3, $zero, $s1
 		jal DrawPaddle
-		or $s4, $zero, $a1	# a1 has the new top position stored
+		or $s5, $zero, $a1	# a1 has the new top position stored
 		or $s1, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
-		or $a0, $zero, $s5
-		or $a1, $zero, $s6
+		or $a0, $zero, $s6
+		or $a1, $zero, $s7
 		jal MoveBall
 		
 		# Check for collisions and react accordingly
 CheckForCollisions:
-		beq $s5, 0, POneGameLoss
-		beq $s5, 63, PTwoGameLoss
-		bne $s5, 14, NoLeftCollision
+		beq $s6, 0, POneGameLoss
+		beq $s6, 63, PTwoGameLoss
+		bne $s6, 14, NoLeftCollision
 LeftCollision:
-		blt $s6, $s3, Begin_standby
-		addi $t0, $s3, 5
-		bgt $s6, $t0, Begin_standby
+		blt $s7, $s4, Begin_standby
+		addi $t0, $s4, 5
+		bgt $s7, $t0, Begin_standby
 		j PaddleHit
 NoLeftCollision:
-		bne $s5, 49, NoRightCollision
+		bne $s6, 49, NoRightCollision
 RightCollision:
-		blt $s6, $s4, Begin_standby
-		addi $t0, $s4, 5
-		bgt $s6, $t0, Begin_standby
+		blt $s7, $s5, Begin_standby
+		addi $t0, $s5, 5
+		bgt $s7, $t0, Begin_standby
 		j PaddleHit
 NoRightCollision:
 		j Begin_standby
@@ -65,7 +65,7 @@ PaddleHit:
 		
 # Wait and read buttons
 Begin_standby:
-		ori $t0, $zero, 0x00000002			# load 25 into the counter for a ~50 milisec standby
+		ori $t0, $zero, 0x00000003			# load 25 into the counter for a ~50 milisec standby
 	
 Standby:
 		blez $t0, EndStandby
@@ -156,15 +156,19 @@ MoveBall:
 		jal DrawPoint
 		lw $ra, 0($sp)		# put return back
    		addi $sp, $sp, 4	# change stack back
+   		
+   		# add the x velocity to the x coord
+   		# add the y velocity to the y coord
+   		# draw the new loc
 
 		beqz $s7, else 		# move the ball based on its direction
-		addi $s5, $s5, 1 
+		addi $s6, $s6, 1 
 		j endif
 	else:	
-		addi $s5, $s5, -1
+		addi $s6, $s6, -1
 	endif:	
-		or $a0, $zero, $s5
-		or $a1, $zero, $s6
+		or $a0, $zero, $s6
+		or $a1, $zero, $s7
 		lw $a2, ballColour
 		
 # $a0 contains x position, $a1 contains y position, $a2 contains the colour	
