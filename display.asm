@@ -190,34 +190,22 @@ AdjustDir:
 		
 AdjustDir_left_up:
 		bne $a0, 97, AdjustDir_left_down  # a
-		beq $s0, 0x02000000, Stop_left	# if you were going down then stop
 		li $s0, 0x01000000	# up
 		j AdjustDir_done		
 
 AdjustDir_left_down:
 		bne $a0, 122, AdjustDir_right_up	# z
-		beq $s0, 0x01000000, Stop_left 	# if you were going up then stop
 		li $s0, 0x02000000	# down
-		j AdjustDir_done
-		
-Stop_left:
-		li $s0, 0x00000000		# no dir
 		j AdjustDir_done
 
 AdjustDir_right_up:
 		bne $a0, 107, AdjustDir_right_down # k
-		beq $s1, 0x02000000, Stop_right	# if you were going down then stop
 		li $s1, 0x01000000	# up
 		j AdjustDir_done
 
 AdjustDir_right_down:
 		bne $a0, 109, AdjustDir_none	# m
-		beq $s1, 0x01000000, Stop_right # if you were going up then stop
 		li $s1, 0x02000000	# down
-		j AdjustDir_done
-		
-Stop_right:
-		li $s1, 0x00000000		# no dir
 		j AdjustDir_done
 
 AdjustDir_none:
