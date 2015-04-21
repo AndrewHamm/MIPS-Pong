@@ -10,12 +10,12 @@
 Main:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		li $s2, 1
-		li $s3, 0
+		li $s2, 3	# move over this amount on x
+		li $s3, 1	# before you move this amount on y
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
-		li $s7, 16
+		li $s7, 0#16
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
 
@@ -76,6 +76,9 @@ Standby:
 		syscall		#
 		
 		addi $t0, $t0, -1 		# decrement counter
+		
+		# change the balls position
+		# change the balls counters
 		
 		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
 		blez $t1, Standby
