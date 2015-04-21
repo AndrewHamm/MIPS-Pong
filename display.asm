@@ -19,7 +19,7 @@ Main:
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 NewGame: 
-		jal clearBoard
+		jal ClearBoard
 WaitForButton:
 		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
