@@ -10,8 +10,8 @@
 Main:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		li $s2, 3
-		li $s3, 1
+		li $s2, 1
+		li $s3, 0
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
@@ -46,9 +46,9 @@ CheckForCollisions:
 		beq $s6, 63, PTwoGameLoss
 		bne $s6, 14, NoLeftCollision
 LeftCollision:
-		blt $s7, $s4, Begin_standby
-		addi $t0, $s4, 5
-		bgt $s7, $t0, Begin_standby
+		blt $s7, $s4, Begin_standby	# see if its above paddle
+		addi $t0, $s4, 5		# calculate bottom of paddle
+		bgt $s7, $t0, Begin_standby	# see if its below paddle
 		j PaddleHit
 NoLeftCollision:
 		bne $s6, 49, NoRightCollision
@@ -61,7 +61,9 @@ NoRightCollision:
 		j Begin_standby
 		
 PaddleHit: 
-		xor $s7, $s7, 1
+		li $t0, -1
+		mult $s2, $t0 		# change x direction
+		mflo $s2
 		
 # Wait and read buttons
 Begin_standby:
