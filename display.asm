@@ -199,8 +199,7 @@ DrawPoint:
 POneGameLoss:
 
 PTwoGameLoss:
-		li $v0, 10
-		syscall
+		j NewGame
 		
 #################################################################################
 # AdjustDir  changes the players direction registers depending on the key pressed
