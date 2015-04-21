@@ -40,6 +40,11 @@ DrawObjects:
 		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
 		li $a0, 50
+		# "AI"
+		or $s5, $zero, $s7 	# load in the balls y position
+		addi $s5, $s5, -2 	# subtract to put the ball in the middle of the paddle
+		# end "AI"
+		
 		or $a1, $zero, $s5
 		lw $a2, colourTwo
 		or $a3, $zero, $s1
