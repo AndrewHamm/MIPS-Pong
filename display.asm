@@ -10,14 +10,24 @@
 Main:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		li $s2, 3	# move over this amount on x
+		li $s2, 1	# move over this amount on x
 		li $s3, 1	# before you move this amount on y
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
 		li $s7, 0#16
 
-# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out	
+# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
+WaitForButton:
+
+		li $a0, 10	#
+		li $v0, 32	# pause for 10 milisec
+		syscall		#
+		
+		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
+		blez $t1, WaitForButton
+		
+		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
 		li $a0, 13
@@ -44,6 +54,8 @@ DrawObjects:
 CheckForCollisions:
 		beq $s6, 0, POneGameLoss
 		beq $s6, 63, PTwoGameLoss
+		beq $s7, 31, HorizontalWallHit
+		beq $s7, 0, HorizontalWallHit
 		bne $s6, 14, NoLeftCollision
 LeftCollision:
 		blt $s7, $s4, Begin_standby	# see if its above paddle
@@ -64,6 +76,13 @@ PaddleHit:
 		li $t0, -1
 		mult $s2, $t0 		# change x direction
 		mflo $s2
+		j Begin_standby
+		
+HorizontalWallHit: 
+		# change y direction
+		li $t0, -1
+		mult $s3, $t0
+		mflo $s3
 		
 # Wait and read buttons
 Begin_standby:
@@ -76,9 +95,6 @@ Standby:
 		syscall		#
 		
 		addi $t0, $t0, -1 		# decrement counter
-		
-		# change the balls position
-		# change the balls counters
 		
 		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
 		blez $t1, Standby
