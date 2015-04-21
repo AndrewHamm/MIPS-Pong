@@ -10,8 +10,8 @@
 Main:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		li $s2, 1
-		li $s3, 0
+		li $s2, 3
+		li $s3, 1
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
@@ -157,16 +157,9 @@ MoveBall:
 		lw $ra, 0($sp)		# put return back
    		addi $sp, $sp, 4	# change stack back
    		
-   		# add the x velocity to the x coord
-   		# add the y velocity to the y coord
+   		add $s6, $s6, $s2	# add the x velocity to the x coord
+   		add $s7, $s7, $s3	# add the y velocity to the y coord
    		# draw the new loc
-
-		beqz $s7, else 		# move the ball based on its direction
-		addi $s6, $s6, 1 
-		j endif
-	else:	
-		addi $s6, $s6, -1
-	endif:	
 		or $a0, $zero, $s6
 		or $a1, $zero, $s7
 		lw $a2, ballColour
