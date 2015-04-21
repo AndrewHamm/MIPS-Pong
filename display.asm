@@ -39,12 +39,7 @@ DrawObjects:
 		or $s4, $zero, $a1	# a1 has the new top position stored
 		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
-		li $a0, 50
-		# "AI"
-		or $s5, $zero, $s7 	# load in the balls y position
-		addi $s5, $s5, -2 	# subtract to put the ball in the middle of the paddle
-		# end "AI"
-		
+		li $a0, 50		
 		or $a1, $zero, $s5
 		lw $a2, colourTwo
 		or $a3, $zero, $s1
@@ -56,39 +51,7 @@ DrawObjects:
 		or $a1, $zero, $s7
 		jal MoveBall
 		
-		# Check for collisions and react accordingly
-CheckForCollisions:
-		beq $s6, 0, POneGameLoss
-		beq $s6, 63, PTwoGameLoss
-		beq $s7, 31, HorizontalWallHit
-		beq $s7, 0, HorizontalWallHit
-		bne $s6, 14, NoLeftCollision
-LeftCollision:
-		blt $s7, $s4, Begin_standby	# see if its above paddle
-		addi $t0, $s4, 5		# calculate bottom of paddle
-		bgt $s7, $t0, Begin_standby	# see if its below paddle
-		j PaddleHit
-NoLeftCollision:
-		bne $s6, 49, NoRightCollision
-RightCollision:
-		blt $s7, $s5, Begin_standby
-		addi $t0, $s5, 5
-		bgt $s7, $t0, Begin_standby
-		j PaddleHit
-NoRightCollision:
-		j Begin_standby
-		
-PaddleHit: 
-		li $t0, -1
-		mult $s2, $t0 		# change x direction
-		mflo $s2
-		j Begin_standby
-		
-HorizontalWallHit: 
-		# change y direction
-		li $t0, -1
-		mult $s3, $t0
-		mflo $s3
+		jal CheckForCollisions
 		
 # Wait and read buttons
 Begin_standby:
@@ -201,11 +164,6 @@ DrawPoint:
 		
 		jr $ra
 		
-POneGameLoss:
-
-PTwoGameLoss:
-		j NewGame
-		
 #################################################################################
 # AdjustDir  changes the players direction registers depending on the key pressed
 AdjustDir: 
@@ -236,6 +194,41 @@ AdjustDir_none:
 AdjustDir_done:
 		jr $ra				# Return
 #################################################################################
+# Check for collisions and react accordingly
+CheckForCollisions:
+		beq $s6, 0, POneGameLoss
+		beq $s6, 63, PTwoGameLoss
+		beq $s7, 31, HorizontalWallHit
+		beq $s7, 0, HorizontalWallHit
+		bne $s6, 14, NoLeftCollision	# see if it is in the left-paddle collsion section
+LeftCollision:
+		blt $s7, $s4, Begin_standby	# see if its above paddle
+		addi $t0, $s4, 5		# calculate bottom of paddle
+		bgt $s7, $t0, Begin_standby	# see if its below paddle
+		j PaddleHit
+NoLeftCollision:
+		bne $s6, 49, NoRightCollision	# see if it is in the right-paddle collision section
+RightCollision:
+		blt $s7, $s5, Begin_standby
+		addi $t0, $s5, 5
+		bgt $s7, $t0, Begin_standby
+		j PaddleHit
+NoRightCollision:
+		jr $ra
+		
+PaddleHit: 
+		li $t0, -1
+		mult $s2, $t0 		# change x direction
+		mflo $s2
+		jr $ra
+		
+HorizontalWallHit: 
+		# change y direction
+		li $t0, -1
+		mult $s3, $t0
+		mflo $s3
+		jr $ra
+#################################################################################
 
 ClearBoard:
 		lw $t0, backgroundColour
@@ -248,6 +241,11 @@ ClearBoard:
 		j StartCLoop
 	EndCLoop:
 		jr $ra
+		
+POneGameLoss:
+
+PTwoGameLoss:
+		j NewGame
 		
 	
 				# CURRENTLY NOT USED		
