@@ -51,8 +51,6 @@ DrawObjects:
 		or $a1, $zero, $s7
 		jal MoveBall
 		
-		jal CheckForCollisions
-		
 # Wait and read buttons
 Begin_standby:
 		ori $t0, $zero, 0x00000003			# load 25 into the counter for a ~50 milisec standby
@@ -64,6 +62,8 @@ Standby:
 		syscall		#
 		
 		addi $t0, $t0, -1 		# decrement counter
+		
+		jal CheckForCollisions
 		
 		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
 		blez $t1, Standby
@@ -198,35 +198,37 @@ AdjustDir_done:
 CheckForCollisions:
 		beq $s6, 0, POneGameLoss
 		beq $s6, 63, PTwoGameLoss
-		beq $s7, 31, HorizontalWallHit
-		beq $s7, 0, HorizontalWallHit
 		bne $s6, 14, NoLeftCollision	# see if it is in the left-paddle collsion section
 LeftCollision:
-		blt $s7, $s4, Begin_standby	# see if its above paddle
-		addi $t0, $s4, 5		# calculate bottom of paddle
-		bgt $s7, $t0, Begin_standby	# see if its below paddle
+		blt $s7, $s4, NoPaddleCollision	# see if its above paddle
+		addi $t3, $s4, 5		# calculate bottom of paddle
+		bgt $s7, $t3, NoPaddleCollision	# see if its below paddle
 		j PaddleHit
 NoLeftCollision:
-		bne $s6, 49, NoRightCollision	# see if it is in the right-paddle collision section
+		bne $s6, 49, NoPaddleCollision	# see if it is in the right-paddle collision section
 RightCollision:
-		blt $s7, $s5, Begin_standby
-		addi $t0, $s5, 5
-		bgt $s7, $t0, Begin_standby
+		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
+		addi $t3, $s5, 5
+		bgt $s7, $t0, NoPaddleCollision	# if it is below, there is no vertical collision
 		j PaddleHit
-NoRightCollision:
-		jr $ra
+NoPaddleCollision:
+		j CheckHorizontalHit
 		
 PaddleHit: 
-		li $t0, -1
-		mult $s2, $t0 		# change x direction
+		li $t3, -1
+		mult $s2, $t3 		# change x direction
 		mflo $s2
-		jr $ra
+		
+CheckHorizontalHit:
+		beq $s7, 31, HorizontalWallHit
+		bne $s7, 0, NoCollision
 		
 HorizontalWallHit: 
 		# change y direction
-		li $t0, -1
-		mult $s3, $t0
+		li $t3, -1
+		mult $s3, $t3
 		mflo $s3
+NoCollision:
 		jr $ra
 #################################################################################
 
