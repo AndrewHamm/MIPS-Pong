@@ -7,7 +7,7 @@
 .text
 # s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity, s3 stores balls y-velocity, s4 stores paddle one's position, 
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
-Main:
+NewGame:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s2, 1	# move over this amount on x
@@ -17,9 +17,9 @@ Main:
 		li $s6, 32
 		li $s7, 0#16
 
-# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
-NewGame: 
 		jal ClearBoard
+		
+# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 WaitForButton:
 		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
@@ -234,7 +234,7 @@ AdjustDir_done:
 
 ClearBoard:
 		lw $t0, backgroundColour
-		li $t1, 2048
+		li $t1, 8192
 	StartCLoop:
 		subi $t1, $t1, 4
 		addu $t2, $t1, $gp
