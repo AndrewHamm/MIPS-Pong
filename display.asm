@@ -18,8 +18,9 @@ Main:
 		li $s7, 0#16
 
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
+NewGame: 
+		jal clearBoard
 WaitForButton:
-
 		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
@@ -231,6 +232,19 @@ AdjustDir_none:
 AdjustDir_done:
 		jr $ra				# Return
 #################################################################################
+
+ClearBoard:
+		lw $t0, backgroundColour
+		li $t1, 2048
+	StartCLoop:
+		subi $t1, $t1, 4
+		addu $t2, $t1, $gp
+		sw $t0, ($t2)
+		beqz $t1, EndCLoop
+		j StartCLoop
+	EndCLoop:
+		jr $ra
+		
 	
 				# CURRENTLY NOT USED		
 # $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
