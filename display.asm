@@ -52,7 +52,8 @@ DrawObjects:
 		jal MoveBall
 		
 # Wait and read buttons
-Begin_standby:
+Begin_standby:	
+		# TODO: Store this somewhere besides $t0
 		ori $t0, $zero, 0x00000003			# load 25 into the counter for a ~50 milisec standby
 	
 Standby:
@@ -209,7 +210,7 @@ NoLeftCollision:
 RightCollision:
 		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
 		addi $t3, $s5, 5
-		bgt $s7, $t0, NoPaddleCollision	# if it is below, there is no vertical collision
+		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
 		j PaddleHit
 NoPaddleCollision:
 		j CheckHorizontalHit
