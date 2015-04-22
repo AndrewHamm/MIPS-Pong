@@ -65,7 +65,7 @@ Begin_standby:
 	
 Standby:
 		blez $t0, EndStandby
-		li $a0, 10	#
+		li $a0, 9	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
 		
