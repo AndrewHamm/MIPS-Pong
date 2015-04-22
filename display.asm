@@ -17,6 +17,7 @@
 .text
 
 NewGame:
+		
 		# 1 is 0x00000031
 		# 2 is 0x00000032
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
