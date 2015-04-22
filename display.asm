@@ -4,8 +4,8 @@
 	yDir:			.word -1		# start going to the down
 	P1Score:		.word 0
 	P2Score:		.word 0
-	compCount:		.word 3
-	compSpeed:		.word 3
+	compCount:		.word 2
+	compSpeed:		.word 2
 	colorOne:		.word 0x00ff8000
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
@@ -17,11 +17,6 @@
 .text
 
 NewGame:
-		
-		#li $a0, 10
-		#li $v0, 32
-		#syscall
-
 		# 1 is 0x00000031
 		# 2 is 0x00000032
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
