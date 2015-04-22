@@ -4,8 +4,8 @@
 	yDir:			.word -1		# start going to the down
 	P1Score:		.word 0
 	P2Score:		.word 0
-	compCount:		.word 3
-	compSpeed:		.word 3
+	compCount:		.word 5
+	compSpeed:		.word 5
 	colorOne:		.word 0x00ff8000
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
@@ -43,6 +43,8 @@ NewRound:
 		li $t1, -1
 		sw $t0, ySpeed
 		sw $t1, yDir
+		lw $t2, compSpeed 	# reset compCount
+		sw $t2, compCount
 		
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
