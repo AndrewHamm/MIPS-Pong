@@ -67,11 +67,6 @@ WaitForButton:
 		li $a0, 1000	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
-		
-		#lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		#blez $t1, WaitForButton
-		
-		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
 		move $a0, $s6
@@ -348,26 +343,38 @@ PaddleHit:
 tophigh:
 		li $s3, 1
 		sw $s3, ySpeed
+		li $s3, -1
+		sw $s3, yDir
 		j CheckHorizontalHit
 topmid:
 		li $s3, 2
 		sw $s3, ySpeed
+		li $s3, -1
+		sw $s3, yDir
 		j CheckHorizontalHit
 toplow:
 		li $s3, 4
 		sw $s3, ySpeed
+		li $s3, -1
+		sw $s3, yDir
 		j CheckHorizontalHit
 bottomhigh:
 		li $s3, 4
 		sw $s3, ySpeed
+		li $s3, 1
+		sw $s3, yDir
 		j CheckHorizontalHit
 bottommid:
 		li $s3, 2
 		sw $s3, ySpeed
+		li $s3, 1
+		sw $s3, yDir
 		j CheckHorizontalHit
 bottomlow:
 		li $s3, 1
 		sw $s3, ySpeed
+		li $s3, 1
+		sw $s3, yDir
 		
 CheckHorizontalHit:
 		beq $s7, 31, HorizontalWallHit
