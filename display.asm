@@ -4,8 +4,8 @@
 	yDir:			.word -1		# start going to the down
 	P1Score:		.word 0
 	P2Score:		.word 0
-	compCount:		.word 2
-	compSpeed:		.word 2
+	compCount:		.word 3
+	compSpeed:		.word 3
 	colorOne:		.word 0x00ff8000
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
