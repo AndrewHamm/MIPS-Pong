@@ -97,7 +97,7 @@ Print_playertwo_dir:
 	# print "player 2 "
 	la $a0, Player2
 	li $v0, 4
-	syscall 
+	syscall
 	
 	j Print_dir
 

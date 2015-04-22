@@ -10,6 +10,16 @@
 	backgroundColor:	.word 0x00000000
 
 .text
+
+NewGame:
+
+		# 1 is 0x00000031
+		# 2 is 0x00000032
+		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
+		blez $t1, NewGame
+		
+		
+
 # s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
 NewRound:
@@ -411,8 +421,7 @@ PTwoRoundLoss:
 EndGame:
 		move $a2, $t1
 		jal DrawScore
-		li $v0, 10
-		syscall
+		j NewGame
 	
 				# CURRENTLY NOT USED		
 # $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
