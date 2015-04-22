@@ -53,6 +53,15 @@ DrawObjects:
 		li $a0, 50		
 		or $a1, $zero, $s5
 		lw $a2, colourTwo
+		###
+		blt $s5, $s7, goDown	# if ballx above paddletop, dir = 0x01000000
+		li $s1, 0x01000000
+		j endAi	
+goDown: 
+		# else dir = 0x02000000
+		li $s1, 0x02000000
+endAi:
+		###
 		or $a3, $zero, $s1
 		jal DrawPaddle
 		or $s5, $zero, $a1	# a1 has the new top position stored
