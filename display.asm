@@ -2,6 +2,8 @@
 	xDir:			.word 1		# start going down (x always moves one so it doesnt need speed)
 	ySpeed:			.word 1		# wait this long before you move over 1 y
 	yDir:			.word 1			# start going to the right
+	P1Score:		.word 0
+	P2Score:		.word 0
 	colourOne:		.word 0x00ff8000
 	colourTwo:		.word 0x00c00080
 	ballColour:		.word 0x00ffffff
@@ -29,10 +31,10 @@ NewGame:
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 WaitForButton:
 
-		li $a2, 4
+		lw $a2, P1Score
 		li $a3, 1
 		jal DrawScore
-		li $a2, 8
+		lw $a2, P2Score
 		li $a3, 54
 		jal DrawScore
 
