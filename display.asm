@@ -18,9 +18,9 @@
 
 NewGame:
 		
-		li $a0, 10
-		li $v0, 32
-		syscall
+		#li $a0, 10
+		#li $v0, 32
+		#syscall
 
 		# 1 is 0x00000031
 		# 2 is 0x00000032
