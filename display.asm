@@ -358,10 +358,9 @@ CheckHorizontalHit:
 HorizontalWallHit: 
 		# change y direction if y-count=1 (prevents it from switching until y is about to change)
 		bgt $s3, 1, NoCollision
-		li $t3, -1
 		lw $t4, yDir
-		mult $t4, $t3
-		mflo $t4
+		xori $t4, $t4, 0xffffffff
+		addi $t4, $t4, 1
 		sw $t4, yDir
 NoCollision:
 		jr $ra
