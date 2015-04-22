@@ -11,11 +11,11 @@ NewGame:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s2, 1	# move over this amount on x
-		li $s3, 1	# before you move this amount on y
+		li $s3, 0	# before you move this amount on y
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
-		li $s7, 0
+		li $s7, 15
 
 		jal ClearBoard
 		
@@ -33,7 +33,7 @@ WaitForButton:
 DrawObjects:
 		or $a0, $zero, $s6
 		or $a1, $zero, $s7
-		jal CheckForCollisions	# see if where the ball is going is the same location as the paddle
+		jal CheckForCollisions
 		jal MoveBall
 		
 		li $a0, 13
@@ -119,7 +119,7 @@ DrawPaddle:
 		# else do nothing, make sure the direction is nothing
 		or $a3, $zero, $zero
 	Move:
-		li $t0, 6
+		li $t0, 5
 	StartPLoop:
 		subi $t0, $t0, 1
 		addu $t1, $a1, $t0
@@ -204,7 +204,7 @@ CheckForCollisions:
 		bne $s6, 14, NoLeftCollision	# see if it is in the left-paddle collsion section
 LeftCollision:
 		blt $s7, $s4, NoPaddleCollision	# see if its above paddle
-		addi $t3, $s4, 5		# calculate bottom of paddle
+		addi $t3, $s4, 4		# calculate bottom of paddle
 		bgt $s7, $t3, NoPaddleCollision	# see if its below paddle
 		j PaddleHit
    		
@@ -212,7 +212,7 @@ NoLeftCollision:
 		bne $s6, 49, NoPaddleCollision	# see if it is in the right-paddle collision section
 RightCollision:
 		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
-		addi $t3, $s5, 5
+		addi $t3, $s5, 4
 		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
 		j PaddleHit		
 
