@@ -18,7 +18,7 @@ NewGame:
 
 		# 1 is 0x00000031
 		# 2 is 0x00000032
-		lw $t1, 0xFFFF0004		# check to see if a key has been pressed
+		lw $t1, 0xFFFF0004		# check to see which key has been pressed
 		beq $t1, 0x00000031, SetOnePlayerMode
 		beq $t1, 0x00000032, SetTwoPlayerMode
 		j NewGame
@@ -101,19 +101,10 @@ DrawObjects:
 		li $a0, 50		
 		move $a1, $s5
 		lw $a2, colorTwo
-		#############
-		# Comment out to remove AI
-		############# AI
-		addi $t1, $s5, 2
-		blt $t1, $s7, goDown	# if ballx above paddletop, dir = 0x01000000
-		li $s1, 0x01000000
-		j endAi	
-goDown: 
-		# else dir = 0x02000000
-		li $s1, 0x02000000
-endAi:
-		#############
-		#############
+		
+		lw $t1, mode
+		beq $t1, 1, beginAi
+		
 		move $a3, $s1
 		jal DrawPaddle
 		move $s5, $a1	# a1 has the new top position stored
@@ -387,6 +378,19 @@ HorizontalWallHit:
 		sw $t4, yDir
 NoCollision:
 		jr $ra
+		
+		
+beginAi:
+		addi $t1, $s5, 2
+		blt $t1, $s7, goDown	# if ballx above paddletop, dir = 0x01000000
+		li $s1, 0x01000000
+		j endAi	
+goDown: 
+		# else dir = 0x02000000
+		li $s1, 0x02000000
+endAi:
+		jr $ra
+
 #################################################################################
 
 ClearBoard:
@@ -434,10 +438,9 @@ PTwoRoundLoss:
 EndGame:
 		move $a2, $t1
 		jal DrawScore
-		sw $zero, 0xFFFF0000
+		sw $zero, 0xFFFF0004
 		sw $zero, P1Score
 		sw $zero, P2Score
-		jal ClearBoard
 		j NewGame
 	
 				# CURRENTLY NOT USED		
