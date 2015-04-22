@@ -32,7 +32,7 @@ WaitForButton:
 		syscall		#
 		
 		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		#blez $t1, WaitForButton
+		blez $t1, WaitForButton
 		
 		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
@@ -61,7 +61,7 @@ DrawObjects:
 # Wait and read buttons
 Begin_standby:	
 		# TODO: Store this somewhere besides $t0
-		ori $t0, $zero, 0x00000003			# load 25 into the counter for a ~50 milisec standby
+		ori $t0, $zero, 0x00000002			# load 25 into the counter for a ~50 milisec standby
 	
 Standby:
 		blez $t0, EndStandby
