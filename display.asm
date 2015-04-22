@@ -350,8 +350,8 @@ NoPaddleCollision:
 		j CheckHorizontalHit
 		
 PaddleHit: 
-		lw $t3, Level			# set the compSpeed here so it never misses the first ball
-		sw $t3, compSpeed
+		lw $t4, Level			# set the compSpeed here so it never misses the first ball
+		sw $t4, compSpeed
 		beq $t3, 0, tophigh
 		beq $t3, 1, topmid
 		beq $t3, 2, toplow
