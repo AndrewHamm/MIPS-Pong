@@ -338,7 +338,7 @@ RightCollision:
 		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
 		addi $t3, $s5, 5
 		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
-		sub $t3, $s7, $s4		# store distance from top to hit
+		sub $t3, $s7, $s5		# store distance from top to hit
 		li $s2, -1			# change x-dir
 		j PaddleHit		
 
