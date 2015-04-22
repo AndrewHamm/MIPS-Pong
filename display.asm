@@ -6,7 +6,7 @@
 	P2Score:		.word 0
 	compCount:		.word 0
 	compSpeed:		.word 0		# this gets set to level after the first collision
-	Level:			.word 7
+	Level:			.word 6
 	colorOne:		.word 0x00ff8000
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
