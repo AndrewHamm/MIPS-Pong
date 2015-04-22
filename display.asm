@@ -1,7 +1,7 @@
 .data
 	xDir:			.word 1		# start going right (x always moves one so it doesnt need speed)
 	ySpeed:			.word 1		# wait this long before you move over 1 y
-	yDir:			.word 1		# start going to the down
+	yDir:			.word -1		# start going to the down
 	colourOne:		.word 0x00ff8000
 	colourTwo:		.word 0x00c00080
 	ballColour:		.word 0x00ffffff
@@ -12,8 +12,9 @@
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
 NewGame:
 		li $t0, 1
+		li $t1, -1
 		sw $t0, ySpeed
-		sw $t0, yDir
+		sw $t1, yDir
 		
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
