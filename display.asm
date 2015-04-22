@@ -252,13 +252,13 @@ toplow:
 		li $s3, 4
 		j CheckHorizontalHit
 bottomhigh:
-		li $s3, -4
+		li $s3, 4
 		j CheckHorizontalHit
 bottommid:
-		li $s3, -2
+		li $s3, 2
 		j CheckHorizontalHit
 bottomlow:
-		li $s3, -1
+		li $s3, 1
 		
 CheckHorizontalHit:
 		beq $s7, 31, HorizontalWallHit
