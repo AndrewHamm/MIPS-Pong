@@ -1,21 +1,23 @@
 .data
+	x-dir:			.word 1		# wait this long before you move over 1 x
+	y-dir:			.word 0		# wait this long before you move over 1 y
 	colourOne:		.word 0x00ff8000
 	colourTwo:		.word 0x00c00080
 	ballColour:		.word 0x00ffffff
 	backgroundColour:	.word 0x00000000
 
 .text
-# s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity, s3 stores balls y-velocity, s4 stores paddle one's position, 
+# s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
 NewGame:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		li $s2, 1	# move over this amount on x
-		li $s3, 0	# before you move this amount on y
+		lw $s2, x-dir	# wait this long before you move over 1 x
+		lw $s3, y-dir	# wait this long before you move over 1 y
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
-		li $s7, 15
+		li $s7, 16
 
 		jal ClearBoard
 		
@@ -218,12 +220,12 @@ RightCollision:
 		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
 		sub $t3, $s7, $s4		# store distance from top to hit
 		li $s2, -1			# change x-dir
-		j RightPaddleHit		
+		j PaddleHit		
 
 NoPaddleCollision:
 		j CheckHorizontalHit
 		
-LeftPaddleHit: 
+PaddleHit: 
 		beq $t3, 0, tophigh
 		beq $t3, 1, topmid
 		beq $t3, 2, toplow
