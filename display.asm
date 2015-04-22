@@ -206,6 +206,8 @@ LeftCollision:
 		blt $s7, $s4, NoPaddleCollision	# see if its above paddle
 		addi $t3, $s4, 4		# calculate bottom of paddle
 		bgt $s7, $t3, NoPaddleCollision	# see if its below paddle
+		sub $t3, $s7, $s4		# store distance from top to hit
+		li $s2, 1			# change x-dir
 		j PaddleHit
    		
 NoLeftCollision:
@@ -214,16 +216,32 @@ RightCollision:
 		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
 		addi $t3, $s5, 4
 		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
-		j PaddleHit		
+		sub $t3, $s7, $s4		# store distance from top to hit
+		li $s2, -1			# change x-dir
+		j RightPaddleHit		
 
 NoPaddleCollision:
 		j CheckHorizontalHit
 		
-PaddleHit: 
-		# calculate how far from the center it was 
-		li $t3, -1
-		mult $s2, $t3 		# change x direction
-		mflo $s2
+LeftPaddleHit: 
+		beq $t3, 0, tophigh
+		beq $t3, 1, topmid
+		beq $t3, 2, toplow
+		beq $t3, 3, bottomhigh
+		beq $t3, 4, bottommid
+		beq $t3, 5, bottomlow
+tophigh:
+		li $s3, 1
+topmid:
+		li $s3, 2
+toplow:
+		li $s3, 4
+bottomhigh:
+		li $s3, -4
+bottommid:
+		li $s3, -2
+bottomlow:
+		li $s3, -1
 		
 CheckHorizontalHit:
 		beq $s7, 31, HorizontalWallHit
