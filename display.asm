@@ -53,8 +53,9 @@ DrawObjects:
 		li $a0, 50		
 		or $a1, $zero, $s5
 		lw $a2, colourTwo
-		###
-		blt $s5, $s7, goDown	# if ballx above paddletop, dir = 0x01000000
+		### AI
+		addi $t1, $s5, 2
+		blt $t1, $s7, goDown	# if ballx above paddletop, dir = 0x01000000
 		li $s1, 0x01000000
 		j endAi	
 goDown: 
