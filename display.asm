@@ -30,16 +30,15 @@ NewGame:
 
 		jal ClearBoard
 		
-# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
-WaitForButton:
-
 		lw $a2, P1Score
 		li $a3, 1
 		jal DrawScore
 		lw $a2, P2Score
 		li $a3, 54
 		jal DrawScore
-
+		
+# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
+WaitForButton:
 		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
@@ -92,7 +91,7 @@ Begin_standby:
 	
 Standby:
 		blez $t0, EndStandby
-		li $a0, 9	#
+		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
 		
