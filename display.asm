@@ -4,8 +4,9 @@
 	yDir:			.word -1		# start going to the down
 	P1Score:		.word 0
 	P2Score:		.word 0
-	compCount:		.word 5
-	compSpeed:		.word 5
+	compCount:		.word 0
+	compSpeed:		.word 0		# this gets set to level after the first collision
+	Level:			.word 5
 	colorOne:		.word 0x00ff8000
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
@@ -43,7 +44,8 @@ NewRound:
 		li $t1, -1
 		sw $t0, ySpeed
 		sw $t1, yDir
-		lw $t2, compSpeed 	# reset compCount
+		li $t2, 0
+		sw $t2, compSpeed 	# reset compCount and compSpeed to 0 for first collision
 		sw $t2, compCount
 		
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
@@ -348,6 +350,8 @@ NoPaddleCollision:
 		j CheckHorizontalHit
 		
 PaddleHit: 
+		lw $t3, Level			# set the compSpeed here so it never misses the first ball
+		sw $t3, compSpeed
 		beq $t3, 0, tophigh
 		beq $t3, 1, topmid
 		beq $t3, 2, toplow
