@@ -29,9 +29,10 @@ NewGame:
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 WaitForButton:
 
-		li $a2, 10
+		li $a2, 4
 		li $a3, 1
 		jal DrawScore
+		li $a2, 8
 		li $a3, 54
 		jal DrawScore
 
@@ -151,7 +152,9 @@ DrawPaddle:
 	EndPLoop:		
 		jr $ra
 		nop
-		
+
+# $a2 contains the score of the player and $a3 contains the column of the leftmost scoring dot.
+# Using this information, draws along the top of the screen to display a player's score	
 DrawScore:
 		addi $sp, $sp, -12
    		sw $ra, 0($sp)
