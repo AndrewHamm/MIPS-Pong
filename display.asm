@@ -1,7 +1,7 @@
 .data
-	xDir:			.word 1		# start going down (x always moves one so it doesnt need speed)
-	ySpeed:			.word 1		# wait this long before you move over 1 y
-	yDir:			.word 1			# start going to the right
+	xDir:			.word 1		# start going right (x always moves one so it doesnt need speed)
+	ySpeed:			.word -1		# wait this long before you move over 1 y
+	yDir:			.word -1		# start going to the down
 	P1Score:		.word 0
 	P2Score:		.word 0
 	colourOne:		.word 0x00ff8000
@@ -15,7 +15,9 @@
 NewGame:
 
 		li $t0, 1
+		li $t1, -1
 		sw $t0, ySpeed
+		sw $t1, yDir
 		
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
@@ -64,6 +66,19 @@ DrawObjects:
 		li $a0, 50		
 		or $a1, $zero, $s5
 		lw $a2, colourTwo
+		#############
+		# Comment out to remove AI
+		############# AI
+		addi $t1, $s5, 2
+		blt $t1, $s7, goDown	# if ballx above paddletop, dir = 0x01000000
+		li $s1, 0x01000000
+		j endAi	
+goDown: 
+		# else dir = 0x02000000
+		li $s1, 0x02000000
+endAi:
+		#############
+		#############
 		or $a3, $zero, $s1
 		jal DrawPaddle
 		or $s5, $zero, $a1	# a1 has the new top position stored
