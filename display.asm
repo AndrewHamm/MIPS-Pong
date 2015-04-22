@@ -10,15 +10,33 @@
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
 	backgroundColor:	.word 0x00000000
+	mode:			.word 0  # 1 denotes 1 Player mode
+					 # 2 Means 2 Player mode
+					 # Room for more...
 
 .text
 
 NewGame:
+		
+		#li $a0, 10
+		#li $v0, 32
+		#syscall
 
 		# 1 is 0x00000031
 		# 2 is 0x00000032
-		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		blez $t1, NewGame
+		lw $t1, 0xFFFF0004		# check to see which key has been pressed
+		beq $t1, 0x00000031, SetOnePlayerMode
+		beq $t1, 0x00000032, SetTwoPlayerMode
+		j NewGame
+		
+SetOnePlayerMode:
+		li $t1, 1
+		j BeginGame
+SetTwoPlayerMode:
+		li $t1, 2
+BeginGame:
+		sw $zero, 0xFFFF0000		# clear the button pushed bit
+		sw $t1, mode
 		
 		
 
@@ -85,9 +103,10 @@ DrawObjects:
 		li $a0, 50		
 		move $a1, $s5
 		lw $a2, colorTwo
-		#############
-		# Comment out to remove AI
-		############# AI
+		
+		lw $t1, mode
+		bne $t1, 1, endAi
+		
 		lw $t0, compCount 	
 		addi $t0, $t0, -1	# decrement compCount
 		sw $t0, compCount
@@ -102,8 +121,7 @@ goDown:
 		# else dir = 0x02000000
 		li $s1, 0x02000000
 endAi:
-		#############
-		#############
+		
 		move $a3, $s1
 		jal DrawPaddle
 		move $s5, $a1	# a1 has the new top position stored
@@ -193,7 +211,6 @@ DrawPaddle:
 		j StartPLoop
 	EndPLoop:		
 		jr $ra
-		nop
 
 # $a2 contains the score of the player and $a3 contains the column of the leftmost scoring dot.
 # Using this information, draws along the top of the screen to display a player's score	
@@ -389,6 +406,7 @@ HorizontalWallHit:
 		sw $t4, yDir
 NoCollision:
 		jr $ra
+
 #################################################################################
 
 ClearBoard:
@@ -436,6 +454,9 @@ PTwoRoundLoss:
 EndGame:
 		move $a2, $t1
 		jal DrawScore
+		sw $zero, 0xFFFF0004
+		sw $zero, P1Score
+		sw $zero, P2Score
 		j NewGame
 	
 				# CURRENTLY NOT USED		
