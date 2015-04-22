@@ -11,6 +11,9 @@
 # s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
 NewGame:
+		li $t0, 1
+		sw $t0, ySpeed
+		
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
 		lw $s2, xDir	# wait this long before you move over 1 x
@@ -271,7 +274,8 @@ CheckHorizontalHit:
 		bne $s7, 0, NoCollision
 		
 HorizontalWallHit: 
-		# change y direction
+		# change y direction if y-count=1 (prevents it from switching until y is about to change)
+		bgt $s3, 1, NoCollision
 		li $t3, -1
 		lw $t4, yDir
 		mult $t4, $t3
