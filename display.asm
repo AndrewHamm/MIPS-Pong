@@ -29,8 +29,12 @@ NewGame:
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 WaitForButton:
 
-		jal DrawP1Score
-		jal DrawP2Score
+		li $a2, 10
+		li $a3, 1
+		jal DrawScore
+		li $a2, 10
+		li $a3, 54
+		jal DrawScore
 
 		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
@@ -149,121 +153,42 @@ DrawPaddle:
 		jr $ra
 		nop
 		
-DrawP1Score:
-		addi $sp, $sp, -4
+DrawScore:
+		addi $sp, $sp, -8
    		sw $ra, 0($sp)
+   		sw $s2, 4($sp)
    		
-		li $a0, 9
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 7
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 5
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 3
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 1
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 9
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 7
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 5
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 3
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 1
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		lw $ra, 0($sp)		# put return back
-   		addi $sp, $sp, 4
-		
-		jr $ra
-		
-DrawP2Score:
-		addi $sp, $sp, -4
-   		sw $ra, 0($sp)
+   		move $s2, $a2
+   		lw $a2, ballColour
+   		ble $s2, 5, DrawScoreRow1
+   	DrawScoreRow2:
+   	
+   		sub $t1, $s2, 6
+   		sll $t1, $t1, 1
+   		add $a0, $t1, $a3
+   		li $a1, 3
+   		jal DrawPoint
    		
-		li $a0, 62
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 60
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 58
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 56
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 54
-		li $a1, 3
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 62
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 60
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 58
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 56
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
-		li $a0, 54
-		li $a1, 1
-		lw $a2, ballColour
-		jal DrawPoint
-		
+   		addi $s2, $s2 -1
+   		
+   		bge $s2, 6, DrawScoreRow2
+   		
+	DrawScoreRow1:
+		beq $s2, $zero, DrawScoreEnd
+		sub $t1, $s2, 1
+		sll $t1, $t1, 1
+   		add $a0, $t1, $a3
+   		li $a1, 1
+   		jal DrawPoint
+   		
+   		addi $s2, $s2, -1
+   		
+   		j DrawScoreRow1
+	
+	DrawScoreEnd:
 		lw $ra, 0($sp)		# put return back
-   		addi $sp, $sp, 4
+		lw $s2, 4($sp)
+   		addi $sp, $sp, 8
 		
 		jr $ra
 		
