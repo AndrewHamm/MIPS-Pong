@@ -244,21 +244,27 @@ PaddleHit:
 		beq $t3, 5, bottomlow
 tophigh:
 		li $s3, 1
+		sw $s3, ySpeed
 		j CheckHorizontalHit
 topmid:
 		li $s3, 2
+		sw $s3, ySpeed
 		j CheckHorizontalHit
 toplow:
 		li $s3, 4
+		sw $s3, ySpeed
 		j CheckHorizontalHit
 bottomhigh:
 		li $s3, 4
+		sw $s3, ySpeed
 		j CheckHorizontalHit
 bottommid:
 		li $s3, 2
+		sw $s3, ySpeed
 		j CheckHorizontalHit
 bottomlow:
 		li $s3, 1
+		sw $s3, ySpeed
 		
 CheckHorizontalHit:
 		beq $s7, 31, HorizontalWallHit
