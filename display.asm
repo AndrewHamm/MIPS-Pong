@@ -353,8 +353,14 @@ ClearBoard:
 		jr $ra
 		
 POneGameLoss:
-
+		lw $t1, P2Score
+		addi $t1, $t1, 1
+		sw $t1, P2Score
+		j NewGame
 PTwoGameLoss:
+		lw $t1, P1Score
+		addi $t1, $t1, 1
+		sw $t1, P1Score
 		j NewGame
 		
 	
