@@ -59,7 +59,7 @@ WaitForButton:
 		#lw $t1, 0xFFFF0000		# check to see if a key has been pressed
 		#blez $t1, WaitForButton
 		
-		#sw $zero, 0xFFFF0000		# clear the button pushed bit
+		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
 		move $a0, $s6
