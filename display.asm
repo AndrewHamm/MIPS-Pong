@@ -119,7 +119,7 @@ DrawPaddle:
 		# else do nothing, make sure the direction is nothing
 		or $a3, $zero, $zero
 	Move:
-		li $t0, 5
+		li $t0, 6
 	StartPLoop:
 		subi $t0, $t0, 1
 		addu $t1, $a1, $t0
@@ -204,7 +204,7 @@ CheckForCollisions:
 		bne $s6, 14, NoLeftCollision	# see if it is in the left-paddle collsion section
 LeftCollision:
 		blt $s7, $s4, NoPaddleCollision	# see if its above paddle
-		addi $t3, $s4, 4		# calculate bottom of paddle
+		addi $t3, $s4, 5		# calculate bottom of paddle
 		bgt $s7, $t3, NoPaddleCollision	# see if its below paddle
 		sub $t3, $s7, $s4		# store distance from top to hit
 		li $s2, 1			# change x-dir
@@ -214,7 +214,7 @@ NoLeftCollision:
 		bne $s6, 49, NoPaddleCollision	# see if it is in the right-paddle collision section
 RightCollision:
 		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
-		addi $t3, $s5, 4
+		addi $t3, $s5, 5
 		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
 		sub $t3, $s7, $s4		# store distance from top to hit
 		li $s2, -1			# change x-dir
@@ -232,14 +232,19 @@ LeftPaddleHit:
 		beq $t3, 5, bottomlow
 tophigh:
 		li $s3, 1
+		j CheckHorizontalHit
 topmid:
 		li $s3, 2
+		j CheckHorizontalHit
 toplow:
 		li $s3, 4
+		j CheckHorizontalHit
 bottomhigh:
 		li $s3, -4
+		j CheckHorizontalHit
 bottommid:
 		li $s3, -2
+		j CheckHorizontalHit
 bottomlow:
 		li $s3, -1
 		
