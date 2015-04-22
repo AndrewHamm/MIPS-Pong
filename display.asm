@@ -12,7 +12,7 @@
 .text
 # s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
-NewGame:
+NewRound:
 
 		li $t0, 1
 		li $t1, -1
@@ -296,8 +296,8 @@ AdjustDir_done:
 # first check if it is a normal collision
 # then check if it is a valid corner collsion
 CheckForCollisions:
-		beq $s6, 0, POneGameLoss
-		beq $s6, 63, PTwoGameLoss
+		beq $s6, 0, POneRoundLoss
+		beq $s6, 63, PTwoRoundLoss
 		bne $s6, 14, NoLeftCollision	# see if it is in the left-paddle collsion section
 LeftCollision:
 		blt $s7, $s4, NoPaddleCollision	# see if its above paddle
@@ -378,7 +378,7 @@ ClearBoard:
 	EndCLoop:
 		jr $ra
 		
-POneGameLoss:
+POneRoundLoss:
 		# Increment player 2's score
 		lw $t1, P2Score
 		addi $t1, $t1, 1
@@ -391,8 +391,8 @@ POneGameLoss:
 		li $a3, 54
 		beq $t1, 10, EndGame
 		
-		j NewGame
-PTwoGameLoss:	
+		j NewRound
+PTwoRoundLoss:	
 		# Increment player 1's score
 		lw $t1, P1Score
 		addi $t1, $t1, 1
@@ -404,7 +404,7 @@ PTwoGameLoss:
 		
 		li $a3, 1
 		beq $t1, 10, EndGame
-		j NewGame
+		j NewRound
 	
 # Ends the game, wrapping up the process
 # In the future, we want this to display the start screen/winner screen	
