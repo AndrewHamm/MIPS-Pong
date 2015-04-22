@@ -290,6 +290,29 @@ DrawPoint:
 		sw $a2, ($v0)		# draw the color to the location
 		
 		jr $ra
+
+# $a0 the x starting coordinate
+# $a1 the x ending coordinate
+# $a2 the color
+# $a3 the y coordinate
+DrawHorizontalLine:
+		
+
+		jr $ra
+		
+# $a0 the y starting coordinate
+# $a1 the y ending coordinate
+# $a2 the color
+# $a3 the x coordinate
+DrawVerticalLine:
+		
+		sub $t0, $a2, $a1
+		
+	VerticalLoop:
+		
+		
+		
+		jr $ra
 		
 #################################################################################
 # AdjustDir  changes the players direction registers depending on the key pressed
