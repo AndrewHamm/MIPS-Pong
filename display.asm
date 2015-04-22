@@ -103,7 +103,7 @@ DrawObjects:
 		li $a0, 50		
 		move $a1, $s5
 		lw $a2, colorTwo
-		
+startAi:
 		lw $t1, mode
 		bne $t1, 1, endAi
 		
