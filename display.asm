@@ -370,13 +370,24 @@ POneGameLoss:
 		lw $t1, P2Score
 		addi $t1, $t1, 1
 		sw $t1, P2Score
+		li $a3, 54
+		beq $t1, 10, EndGame
 		j NewGame
 PTwoGameLoss:
 		lw $t1, P1Score
 		addi $t1, $t1, 1
 		sw $t1, P1Score
+		li $a3, 1
+		beq $t1, 10, EndGame
 		j NewGame
-		
+	
+# Ends the game, wrapping up the process
+# In the future, we want this to display the start screen/winner screen	
+EndGame:
+		move $a2, $t1
+		jal DrawScore
+		li $v0, 10
+		syscall
 	
 				# CURRENTLY NOT USED		
 # $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
