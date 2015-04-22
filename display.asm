@@ -32,7 +32,6 @@ WaitForButton:
 		li $a2, 10
 		li $a3, 1
 		jal DrawScore
-		li $a2, 10
 		li $a3, 54
 		jal DrawScore
 
@@ -154,9 +153,10 @@ DrawPaddle:
 		nop
 		
 DrawScore:
-		addi $sp, $sp, -8
+		addi $sp, $sp, -12
    		sw $ra, 0($sp)
    		sw $s2, 4($sp)
+   		sw $a2, 8($sp)
    		
    		move $s2, $a2
    		lw $a2, ballColour
@@ -188,7 +188,8 @@ DrawScore:
 	DrawScoreEnd:
 		lw $ra, 0($sp)		# put return back
 		lw $s2, 4($sp)
-   		addi $sp, $sp, 8
+		lw $a2, 8($sp)
+   		addi $sp, $sp, 12
 		
 		jr $ra
 		
