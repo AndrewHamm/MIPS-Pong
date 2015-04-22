@@ -367,16 +367,29 @@ ClearBoard:
 		jr $ra
 		
 POneGameLoss:
+		# Increment player 2's score
 		lw $t1, P2Score
 		addi $t1, $t1, 1
 		sw $t1, P2Score
+		
+		#Ready the next round
+		li $t2, 1
+		sw $t2, xDir
+		
 		li $a3, 54
 		beq $t1, 10, EndGame
+		
 		j NewGame
-PTwoGameLoss:
+PTwoGameLoss:	
+		# Increment player 1's score
 		lw $t1, P1Score
 		addi $t1, $t1, 1
 		sw $t1, P1Score
+		
+		#Ready the next round
+		li $t2, -1
+		sw $t2, xDir
+		
 		li $a3, 1
 		beq $t1, 10, EndGame
 		j NewGame
