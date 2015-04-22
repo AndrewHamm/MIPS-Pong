@@ -15,7 +15,7 @@ NewGame:
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
-		li $s7, 0#16
+		li $s7, 0
 
 		jal ClearBoard
 		
@@ -31,6 +31,11 @@ WaitForButton:
 		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
+		or $a0, $zero, $s6
+		or $a1, $zero, $s7
+		jal CheckForCollisions	# see if where the ball is going is the same location as the paddle
+		jal MoveBall
+		
 		li $a0, 13
 		or $a1, $zero, $s4
 		lw $a2, colourOne
@@ -47,10 +52,6 @@ DrawObjects:
 		or $s5, $zero, $a1	# a1 has the new top position stored
 		or $s1, $zero, $a3	# a3 has the new direction stored if it hit an edge
 		
-		or $a0, $zero, $s6
-		or $a1, $zero, $s7
-		jal MoveBall
-		
 # Wait and read buttons
 Begin_standby:	
 		# TODO: Store this somewhere besides $t0
@@ -63,8 +64,6 @@ Standby:
 		syscall		#
 		
 		addi $t0, $t0, -1 		# decrement counter
-		
-		jal CheckForCollisions
 		
 		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
 		blez $t1, Standby
@@ -196,6 +195,9 @@ AdjustDir_done:
 		jr $ra				# Return
 #################################################################################
 # Check for collisions and react accordingly
+# $a0 contains balls x-pos $a1 contains balls y-pos
+# first check if it is a normal collision
+# then check if it is a valid corner collsion
 CheckForCollisions:
 		beq $s6, 0, POneGameLoss
 		beq $s6, 63, PTwoGameLoss
@@ -205,17 +207,20 @@ LeftCollision:
 		addi $t3, $s4, 5		# calculate bottom of paddle
 		bgt $s7, $t3, NoPaddleCollision	# see if its below paddle
 		j PaddleHit
+   		
 NoLeftCollision:
 		bne $s6, 49, NoPaddleCollision	# see if it is in the right-paddle collision section
 RightCollision:
 		blt $s7, $s5, NoPaddleCollision	# if it is above, there is no vertical collision
 		addi $t3, $s5, 5
 		bgt $s7, $t3, NoPaddleCollision	# if it is below, there is no vertical collision
-		j PaddleHit
+		j PaddleHit		
+
 NoPaddleCollision:
 		j CheckHorizontalHit
 		
 PaddleHit: 
+		# calculate how far from the center it was 
 		li $t3, -1
 		mult $s2, $t3 		# change x direction
 		mflo $s2
