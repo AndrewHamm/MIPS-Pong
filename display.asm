@@ -211,7 +211,6 @@ DrawPaddle:
 		j StartPLoop
 	EndPLoop:		
 		jr $ra
-		nop
 
 # $a2 contains the score of the player and $a3 contains the column of the leftmost scoring dot.
 # Using this information, draws along the top of the screen to display a player's score	
