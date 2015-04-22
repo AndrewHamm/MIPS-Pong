@@ -8,6 +8,9 @@
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
 	backgroundColor:	.word 0x00000000
+	mode:			.word 0  # 1 denotes 1 Player mode
+					 # 2 Means 2 Player mode
+					 # Room for more...
 
 .text
 
@@ -15,8 +18,18 @@ NewGame:
 
 		# 1 is 0x00000031
 		# 2 is 0x00000032
-		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		blez $t1, NewGame
+		lw $t1, 0xFFFF0004		# check to see if a key has been pressed
+		beq $t1, 0x00000031, SetOnePlayerMode
+		beq $t1, 0x00000032, SetTwoPlayerMode
+		j NewGame
+		
+SetOnePlayerMode:
+		li $t1, 1
+		j BeginGame
+SetTwoPlayerMode:
+		li $t1, 2
+BeginGame:
+		sw $t1, mode
 		
 		
 
@@ -421,6 +434,10 @@ PTwoRoundLoss:
 EndGame:
 		move $a2, $t1
 		jal DrawScore
+		sw $zero, 0xFFFF0000
+		sw $zero, P1Score
+		sw $zero, P2Score
+		jal ClearBoard
 		j NewGame
 	
 				# CURRENTLY NOT USED		
