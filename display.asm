@@ -17,6 +17,10 @@
 .text
 
 NewGame:
+		
+		li $a0, 10
+		li $v0, 32
+		syscall
 
 		# 1 is 0x00000031
 		# 2 is 0x00000032
@@ -31,6 +35,7 @@ SetOnePlayerMode:
 SetTwoPlayerMode:
 		li $t1, 2
 BeginGame:
+		sw $zero, 0xFFFF0000		# clear the button pushed bit
 		sw $t1, mode
 		
 		
@@ -80,11 +85,6 @@ WaitForButton:
 		li $a0, 1000	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
-		
-		#lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		#blez $t1, WaitForButton
-		
-		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
 		move $a0, $s6
@@ -105,7 +105,22 @@ DrawObjects:
 		lw $a2, colorTwo
 		
 		lw $t1, mode
-		beq $t1, 1, beginAi
+		bne $t1, 1, endAi
+		
+		lw $t0, compCount 	
+		addi $t0, $t0, -1	# decrement compCount
+		sw $t0, compCount
+		bgt $t0, 0, endAi
+		lw $t0, compSpeed 	# reset compCount
+		sw $t0, compCount
+		addi $t1, $s5, 2	# calculate the middle of the paddle
+		blt $t1, $s7, goDown	# if ballx above paddlemid, dir = 0x01000000
+		li $s1, 0x01000000
+		j endAi	
+goDown: 
+		# else dir = 0x02000000
+		li $s1, 0x02000000
+endAi:
 		
 		move $a3, $s1
 		jal DrawPaddle
@@ -379,24 +394,6 @@ HorizontalWallHit:
 		addi $t4, $t4, 1
 		sw $t4, yDir
 NoCollision:
-		jr $ra
-		
-		
-beginAi:
-		lw $t0, compCount 	
-		addi $t0, $t0, -1	# decrement compCount
-		sw $t0, compCount
-		bgt $t0, 0, endAi
-		lw $t0, compSpeed 	# reset compCount
-		sw $t0, compCount
-		addi $t1, $s5, 2	# calculate the middle of the paddle
-		blt $t1, $s7, goDown	# if ballx above paddlemid, dir = 0x01000000
-		li $s1, 0x01000000
-		j endAi	
-goDown: 
-		# else dir = 0x02000000
-		li $s1, 0x02000000
-endAi:
 		jr $ra
 
 #################################################################################
