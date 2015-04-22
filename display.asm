@@ -37,16 +37,29 @@ NewGame:
 		li $a3, 54
 		jal DrawScore
 		
+		li $a3, 0
+		
+		li $a0, 13
+		or $a1, $zero, $s4
+		lw $a2, colourOne
+		jal DrawPaddle
+		
+		li $a0, 50
+		or $a1, $zero, $s5
+		lw $a2, colourTwo
+		jal DrawPaddle
+		
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 WaitForButton:
-		li $a0, 10	#
+
+		li $a0, 1000	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
 		
-		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		blez $t1, WaitForButton
+		#lw $t1, 0xFFFF0000		# check to see if a key has been pressed
+		#blez $t1, WaitForButton
 		
-		sw $zero, 0xFFFF0000		# clear the button pushed bit
+		#sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
 		or $a0, $zero, $s6
