@@ -1,7 +1,7 @@
 .data
-	x-dir:			.word 1		# start going down
-	y-speed:		.word 1		# wait this long before you move over 1 y
-	y-dir:			.word 1		# start going to the right
+	xDir:			.word 1		# start going down (x always moves one so it doesnt need speed)
+	ySpeed:			.word 1		# wait this long before you move over 1 y
+	yDir:			.word 1			# start going to the right
 	colourOne:		.word 0x00ff8000
 	colourTwo:		.word 0x00c00080
 	ballColour:		.word 0x00ffffff
@@ -13,12 +13,12 @@
 NewGame:
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
-		lw $s2, x-dir	# wait this long before you move over 1 x
-		lw $s3, y-dir	# wait this long before you move over 1 y
+		lw $s2, xDir	# wait this long before you move over 1 x
+		lw $s3, ySpeed	# wait this long before you move over 1 y
 		li $s4, 13
 		li $s5, 13
 		li $s6, 32
-		li $s7, 16
+		li $s7, 0
 
 		jal ClearBoard
 		
@@ -29,7 +29,7 @@ WaitForButton:
 		syscall		#
 		
 		lw $t1, 0xFFFF0000		# check to see if a key has been pressed
-		blez $t1, WaitForButton
+		#blez $t1, WaitForButton
 		
 		sw $zero, 0xFFFF0000		# clear the button pushed bit
 
@@ -155,9 +155,9 @@ MoveBall:
    		addi $s3, $s3, -1
    		bgt $s3, 0, NoYChange
 ChangeY:
-		lw $t0, y-dir	
+		lw $t0, yDir	
 		add $s7, $s7, $t0
-		lw $s3, y-speed
+		lw $s3, ySpeed
 NoYChange:
    		# do nothing
    		
@@ -267,8 +267,10 @@ CheckHorizontalHit:
 HorizontalWallHit: 
 		# change y direction
 		li $t3, -1
-		mult $s3, $t3
-		mflo $s3
+		lw $t4, yDir
+		mult $t4, $t3
+		mflo $t4
+		sw $t4, yDir
 NoCollision:
 		jr $ra
 #################################################################################
