@@ -11,6 +11,7 @@
 # s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
 # s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
 NewGame:
+
 		li $t0, 1
 		sw $t0, ySpeed
 		
@@ -27,6 +28,10 @@ NewGame:
 		
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
 WaitForButton:
+
+		jal DrawP1Score
+		jal DrawP2Score
+
 		li $a0, 10	#
 		li $v0, 32	# pause for 10 milisec
 		syscall		#
@@ -57,6 +62,7 @@ DrawObjects:
 		jal DrawPaddle
 		or $s5, $zero, $a1	# a1 has the new top position stored
 		or $s1, $zero, $a3	# a3 has the new direction stored if it hit an edge
+		
 		
 # Wait and read buttons
 Begin_standby:	
@@ -142,7 +148,125 @@ DrawPaddle:
 	EndPLoop:		
 		jr $ra
 		nop
-
+		
+DrawP1Score:
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)
+   		
+		li $a0, 9
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 7
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 5
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 3
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 1
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 9
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 7
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 5
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 3
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 1
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4
+		
+		jr $ra
+		
+DrawP2Score:
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)
+   		
+		li $a0, 62
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 60
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 58
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 56
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 54
+		li $a1, 3
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 62
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 60
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 58
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 56
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		li $a0, 54
+		li $a1, 1
+		lw $a2, ballColour
+		jal DrawPoint
+		
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4
+		
+		jr $ra
+		
 # $a0 contains x position, $a1 contains y position	
 MoveBall:		
 		# draw over the last point
@@ -169,7 +293,7 @@ NoYChange:
 		or $a1, $zero, $s7
 		lw $a2, ballColour
 		
-# $a0 contains x position, $a1 contains y position, $a2 contains the colour	
+# $a0 contains x position, $a1 contains y position, $a2 contains the color	
 DrawPoint:
 		sll $t0, $a1, 6   # multiply y-coordinate by 64 (length of the field)
 		addu $v0, $a0, $t0
