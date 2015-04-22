@@ -4,10 +4,10 @@
 	yDir:			.word -1		# start going to the down
 	P1Score:		.word 0
 	P2Score:		.word 0
-	colourOne:		.word 0x00ff8000
-	colourTwo:		.word 0x00c00080
-	ballColour:		.word 0x00ffffff
-	backgroundColour:	.word 0x00000000
+	colorOne:		.word 0x00ff8000
+	colorTwo:		.word 0x00c00080
+	ballColor:		.word 0x00ffffff
+	backgroundColor:	.word 0x00000000
 
 .text
 # s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
@@ -41,12 +41,12 @@ NewGame:
 		
 		li $a0, 13
 		or $a1, $zero, $s4
-		lw $a2, colourOne
+		lw $a2, colorOne
 		jal DrawPaddle
 		
 		li $a0, 50
 		or $a1, $zero, $s5
-		lw $a2, colourTwo
+		lw $a2, colorTwo
 		jal DrawPaddle
 		
 # TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
@@ -69,7 +69,7 @@ DrawObjects:
 		
 		li $a0, 13
 		or $a1, $zero, $s4
-		lw $a2, colourOne
+		lw $a2, colorOne
 		or $a3, $zero, $s0
 		jal DrawPaddle
 		or $s4, $zero, $a1	# a1 has the new top position stored
@@ -77,7 +77,7 @@ DrawObjects:
 		
 		li $a0, 50		
 		or $a1, $zero, $s5
-		lw $a2, colourTwo
+		lw $a2, colorTwo
 		#############
 		# Comment out to remove AI
 		############# AI
@@ -132,14 +132,14 @@ DrawPaddle:
    		or $t2, $zero, $a2
    		or $t1, $zero, $a1
    		addi $a1, $a1, 5	# the bottom point
-		lw $a2, backgroundColour
+		lw $a2, backgroundColor
 		addi $sp, $sp, -4
    		sw $ra, 0($sp)   	# saves $ra on stack
 		jal DrawPoint
 		lw $ra, 0($sp)		# put return back
    		addi $sp, $sp, 4	# change stack back
    		or $a1, $zero, $t1	# put back top y position
-   		or $a2, $zero, $t2	# put back colour
+   		or $a2, $zero, $t2	# put back color
    		
 		# move top y up (as long as its not at the top)
 		beq $a1, 0, NoMove
@@ -148,13 +148,13 @@ DrawPaddle:
 	down:
 		# erase top point
 		or $t1, $zero, $a2
-		lw $a2, backgroundColour
+		lw $a2, backgroundColor
 		addi $sp, $sp, -4
    		sw $ra, 0($sp)   	# saves $ra on stack
 		jal DrawPoint
 		lw $ra, 0($sp)		# put return back
    		addi $sp, $sp, 4	# change stack back
-   		or $a2, $zero, $t1	# put back colour
+   		or $a2, $zero, $t1	# put back color
    		
 		# move down top y (as long as bottom is not at bottom)
 		beq $a1, 26, NoMove	# height is 31 - 5 = 26
@@ -191,7 +191,7 @@ DrawScore:
    		sw $a2, 8($sp)
    		
    		move $s2, $a2
-   		lw $a2, ballColour
+   		lw $a2, ballColor
    		ble $s2, 5, DrawScoreRow1
    	DrawScoreRow2:
    	
@@ -228,7 +228,7 @@ DrawScore:
 # $a0 contains x position, $a1 contains y position	
 MoveBall:		
 		# draw over the last point
-		lw $a2, backgroundColour
+		lw $a2, backgroundColor
 		addi $sp, $sp, -4
    		sw $ra, 0($sp)   	# saves $ra on stack
 		jal DrawPoint
@@ -249,7 +249,7 @@ NoYChange:
    		# draw the new loc
 		or $a0, $zero, $s6
 		or $a1, $zero, $s7
-		lw $a2, ballColour
+		lw $a2, ballColor
 		
 # $a0 contains x position, $a1 contains y position, $a2 contains the color	
 DrawPoint:
@@ -257,7 +257,7 @@ DrawPoint:
 		addu $v0, $a0, $t0
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
-		sw $a2, ($v0)		# draw the colour to the location
+		sw $a2, ($v0)		# draw the color to the location
 		
 		jr $ra
 		
@@ -368,7 +368,7 @@ NoCollision:
 #################################################################################
 
 ClearBoard:
-		lw $t0, backgroundColour
+		lw $t0, backgroundColor
 		li $t1, 8192
 	StartCLoop:
 		subi $t1, $t1, 4
