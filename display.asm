@@ -1,6 +1,7 @@
 .data
-	x-dir:			.word 1		# wait this long before you move over 1 x
-	y-dir:			.word 0		# wait this long before you move over 1 y
+	x-dir:			.word 1		# start going down
+	y-speed:		.word 1		# wait this long before you move over 1 y
+	y-dir:			.word 1		# start going to the right
 	colourOne:		.word 0x00ff8000
 	colourTwo:		.word 0x00c00080
 	ballColour:		.word 0x00ffffff
@@ -150,7 +151,16 @@ MoveBall:
    		addi $sp, $sp, 4	# change stack back
    		
    		add $s6, $s6, $s2	# add the x velocity to the x coord
-   		add $s7, $s7, $s3	# add the y velocity to the y coord
+   		# y doesnt always change, check if it needs to
+   		addi $s3, $s3, -1
+   		bgt $s3, 0, NoYChange
+ChangeY:
+		lw $t0, y-dir	
+		add $s7, $s7, $t0
+		lw $s3, y-speed
+NoYChange:
+   		# do nothing
+   		
    		# draw the new loc
 		or $a0, $zero, $s6
 		or $a1, $zero, $s7
