@@ -40,12 +40,12 @@ NewGame:
 		li $a3, 0
 		
 		li $a0, 13
-		or $a1, $zero, $s4
+		move $a1, $s4
 		lw $a2, colorOne
 		jal DrawPaddle
 		
 		li $a0, 50
-		or $a1, $zero, $s5
+		move $a1, $s5
 		lw $a2, colorTwo
 		jal DrawPaddle
 		
@@ -62,21 +62,21 @@ WaitForButton:
 		#sw $zero, 0xFFFF0000		# clear the button pushed bit
 
 DrawObjects:
-		or $a0, $zero, $s6
-		or $a1, $zero, $s7
+		move $a0, $s6
+		move $a1, $s7
 		jal CheckForCollisions
 		jal MoveBall
 		
 		li $a0, 13
-		or $a1, $zero, $s4
+		move $a1, $s4
 		lw $a2, colorOne
-		or $a3, $zero, $s0
+		move $a3, $s0
 		jal DrawPaddle
-		or $s4, $zero, $a1	# a1 has the new top position stored
-		or $s0, $zero, $a3	# a3 has the new direction stored if it hit an edge
+		move $s4, $a1	# a1 has the new top position stored
+		move $s0, $a3	# a3 has the new direction stored if it hit an edge
 		
 		li $a0, 50		
-		or $a1, $zero, $s5
+		move $a1, $s5
 		lw $a2, colorTwo
 		#############
 		# Comment out to remove AI
@@ -91,16 +91,16 @@ goDown:
 endAi:
 		#############
 		#############
-		or $a3, $zero, $s1
+		move $a3, $s1
 		jal DrawPaddle
-		or $s5, $zero, $a1	# a1 has the new top position stored
-		or $s1, $zero, $a3	# a3 has the new direction stored if it hit an edge
+		move $s5, $a1	# a1 has the new top position stored
+		move $s1, $a3	# a3 has the new direction stored if it hit an edge
 		
 		
 # Wait and read buttons
 Begin_standby:	
 		# TODO: Store this somewhere besides $t0
-		ori $t0, $zero, 0x00000002			# load 25 into the counter for a ~50 milisec standby
+		li $t0, 0x00000002			# load 25 into the counter for a ~50 milisec standby
 	
 Standby:
 		blez $t0, EndStandby
@@ -129,8 +129,8 @@ DrawPaddle:
 	bne $a3, 0x01000000, NoMove
 	up:
 		# erase bottom point
-   		or $t2, $zero, $a2
-   		or $t1, $zero, $a1
+   		move $t2, $a2
+   		move $t1, $a1
    		addi $a1, $a1, 5	# the bottom point
 		lw $a2, backgroundColor
 		addi $sp, $sp, -4
@@ -138,8 +138,8 @@ DrawPaddle:
 		jal DrawPoint
 		lw $ra, 0($sp)		# put return back
    		addi $sp, $sp, 4	# change stack back
-   		or $a1, $zero, $t1	# put back top y position
-   		or $a2, $zero, $t2	# put back color
+   		move $a1, $t1	# put back top y position
+   		move $a2, $t2	# put back color
    		
 		# move top y up (as long as its not at the top)
 		beq $a1, 0, NoMove
@@ -147,14 +147,14 @@ DrawPaddle:
 		j Move
 	down:
 		# erase top point
-		or $t1, $zero, $a2
+		move $t1, $a2
 		lw $a2, backgroundColor
 		addi $sp, $sp, -4
    		sw $ra, 0($sp)   	# saves $ra on stack
 		jal DrawPoint
 		lw $ra, 0($sp)		# put return back
    		addi $sp, $sp, 4	# change stack back
-   		or $a2, $zero, $t1	# put back color
+   		move $a2, $t1	# put back color
    		
 		# move down top y (as long as bottom is not at bottom)
 		beq $a1, 26, NoMove	# height is 31 - 5 = 26
@@ -162,7 +162,7 @@ DrawPaddle:
 		j Move
 	NoMove:
 		# else do nothing, make sure the direction is nothing
-		or $a3, $zero, $zero
+		li $a3, 0
 	Move:
 		li $t0, 6
 	StartPLoop:
@@ -247,8 +247,8 @@ NoYChange:
    		# do nothing
    		
    		# draw the new loc
-		or $a0, $zero, $s6
-		or $a1, $zero, $s7
+		move $a0, $s6
+		move $a1, $s7
 		lw $a2, ballColor
 		
 # $a0 contains x position, $a1 contains y position, $a2 contains the color	
