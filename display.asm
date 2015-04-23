@@ -199,7 +199,118 @@ G:
 	lw $a2, ballColor
 	li $a3, 43 #the ending x coordinate
 	jal DrawHorizontalLine
+	
+Press:
+	li $a0, 12 #the x coordinate
+	li $a1, 25 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 29 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 12 #the x starting coordinate
+	li $a1, 25 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 15 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 15 #the x coordinate
+	li $a1, 26 #the starting y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 27 #the ending y coordinate
+	jal DrawVerticalLine
 
+	li $a0, 13 #the starting x coordinate
+	li $a1, 27 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 15 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+ess:
+	li $a0, 21 #the x coordinate
+	li $a1, 25 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 29 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 22 #the starting x coordinate
+	li $a1, 29 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 22 #the starting x coordinate
+	li $a1, 27 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 22 #the starting x coordinate
+	li $a1, 25 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+ss:
+	li $a0, 24 #the starting x coordinate
+	li $a1, 29 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 26 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 24 #the starting x coordinate
+	li $a1, 27 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 26 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 24 #the starting x coordinate
+	li $a1, 25 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 26 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 24 #the starting x coordinate
+	li $a1, 26 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 26 #the starting x coordinate
+	li $a1, 28 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 22 #the starting x coordinate
+	li $a1, 25 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+
+	li $a0, 28 #the starting x coordinate
+	li $a1, 29 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 30 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 28 #the starting x coordinate
+	li $a1, 27 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 30 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 28 #the starting x coordinate
+	li $a1, 25 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 30 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 28 #the starting x coordinate
+	li $a1, 26 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 30 #the starting x coordinate
+	li $a1, 28 #the y coordinate
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	
 NewGame:
 		
 		# 1 is 0x00000031
