@@ -11,11 +11,48 @@
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
 	backgroundColor:	.word 0x00000000
+	blueColor:		.word 0x0012fff7
 	mode:			.word 0  # 1 denotes 1 Player mode
 					 # 2 Means 2 Player mode
 					 # Room for more...
 
 .text
+leftLines:
+	li $a0, 10 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 14 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 15 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 17 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
 
 li $a0, 21 #the x coordinate
 li $a1, 13 #the y starting coordinate
