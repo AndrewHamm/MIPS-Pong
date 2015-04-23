@@ -4,7 +4,7 @@ MIPS-PONG
 The age-old game of pong implemented in MIPS assembly.  Please excuse our mess. It's a work in progress!
 
 This is meant to be run in the MARS simulator.  It uses both the Bitmap Dislay and the Keyboard and Display MIMO Simulator tools.
-The MARS simulator had a bug a threading bug involving using multiple tools. A fix was published by the internet user [Confect](https://dtconfect.wordpress.com/2013/02/09/mars-mips-simulator-lockup-hackfix/). We also used Confect's Mips snake game as a learning source.
+The MARS simulator had a bug a threading bug involving using multiple tools. A fix was published by the internet user [Confect](https://dtconfect.wordpress.com/2013/02/09/mars-mips-simulator-lockup-hackfix/). We also used Confect's [MIPS snake game](https://dtconfect.wordpress.com/projects/year2/mips-snake-and-primlib/) as a learning source.
 
 ## How To Run
 
