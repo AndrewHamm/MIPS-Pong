@@ -240,6 +240,35 @@ OinOr:
 	li $a1, 29
 	lw $a2, ballColor
 	jal DrawPoint
+	
+RinOr:
+	li $a0, 43 #the x coordinate
+	li $a1, 25 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 29 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 44 #the x coordinate
+	li $a1, 25 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 27 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 44
+	li $a1, 26
+	lw $a2, backgroundColor
+	jal DrawPoint
+	
+	li $a0, 45 #the x coordinate
+	li $a1, 25 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 29 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 45
+	li $a1, 27
+	lw $a2, backgroundColor
+	jal DrawPoint
 
 NewGame:
 		
