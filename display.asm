@@ -19,7 +19,6 @@
 .text
 
 NewGame:
-
 leftLines:
 	li $a0, 10 #the x starting coordinate
 	li $a1, 13 #the y coordinate
@@ -56,6 +55,43 @@ leftLines:
 	lw $a2, colorOne #the color
 	li $a3, 18 #the x ending coordinate
 	jal DrawHorizontalLine
+	
+rightLines:
+	li $a0, 46 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 14 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 15 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 17 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine	
 	
 P:
 	li $a0, 21 #the x coordinate
@@ -166,43 +202,6 @@ G:
 	li $a3, 43 #the ending x coordinate
 	jal DrawHorizontalLine
 
-rightLines:
-	li $a0, 46 #the x starting coordinate
-	li $a1, 13 #the y coordinate
-	lw $a2, colorTwo #the color
-	li $a3, 54 #the x ending coordinate
-	jal DrawHorizontalLine
-	
-	li $a0, 46 #the x starting coordinate
-	li $a1, 14 #the y coordinate
-	lw $a2, colorTwo #the color
-	li $a3, 54 #the x ending coordinate
-	jal DrawHorizontalLine
-	
-	li $a0, 46 #the x starting coordinate
-	li $a1, 15 #the y coordinate
-	lw $a2, blueColor #the color
-	li $a3, 54 #the x ending coordinate
-	jal DrawHorizontalLine
-	
-	li $a0, 46 #the x starting coordinate
-	li $a1, 16 #the y coordinate
-	lw $a2, blueColor #the color
-	li $a3, 54 #the x ending coordinate
-	jal DrawHorizontalLine
-	
-	li $a0, 46 #the x starting coordinate
-	li $a1, 17 #the y coordinate
-	lw $a2, colorOne #the color
-	li $a3, 54 #the x ending coordinate
-	jal DrawHorizontalLine
-	
-	li $a0, 46 #the x starting coordinate
-	li $a1, 18 #the y coordinate
-	lw $a2, colorOne #the color
-	li $a3, 54 #the x ending coordinate
-	jal DrawHorizontalLine	
-	
 Press:
 	li $a0, 12 #the x coordinate
 	li $a1, 25 #the y starting coordinate
