@@ -10,7 +10,7 @@ The MARS simulator had a bug a threading bug involving using multiple tools. A f
 ## How To Run
 
 1. Open the Mars .jar file from our repo.
-2. Load the file into Mars with File -> Open.
+2. Load the pong.asm file into Mars with File -> Open.
 3. Go to Run -> Assemble
 4. Go to tools -> Bitmap Display
 5. The Bitmap Display settings should be as follows:
