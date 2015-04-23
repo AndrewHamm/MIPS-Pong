@@ -13,11 +13,11 @@ The MARS simulator had a bug a threading bug involving using multiple tools. A f
 3. Go to Run -> Assemble
 4. Go to tools -> Bitmap Display
 5. The Bitmap Display settings should be as follows:
-	Unit Width: 8
-	Unit Height: 8
-	Display Width: 512
-	Display Height: 256
-	Base Address: $gp
+  - Unit Width: 8
+  - Unit Height: 8
+  - Display Width: 512
+  - Display Height: 256
+  - Base Address: $gp
 6. Go to tools -> Keyboard and Display MMIO Simulator
 7. Press connect to MIPS on both of the displays
 8. Go to Run -> Go
