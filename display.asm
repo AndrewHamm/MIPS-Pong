@@ -53,6 +53,44 @@ leftLines:
 	lw $a2, colorOne #the color
 	li $a3, 18 #the x ending coordinate
 	jal DrawHorizontalLine
+	
+rightLines:
+	li $a0, 46 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 14 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 15 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 17 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine	
+	
 P:
 	li $a0, 21 #the x coordinate
 	li $a1, 13 #the y starting coordinate
@@ -77,7 +115,30 @@ P:
 	lw $a2, ballColor
 	li $a3, 24 #the ending x coordinate
 	jal DrawHorizontalLine
-
+O:
+	li $a0, 27 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 27 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 31 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 31 #the x coordinate
+	li $a1, 14 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 17 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 27 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 31 #the x ending coordinate
+	jal DrawHorizontalLine
 N:
 	#33 over 13 down.  6 tall
 	li $a0, 33 #the x coordinate
