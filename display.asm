@@ -17,6 +17,12 @@
 
 .text
 
+ li $a0, 5 #the x coordinate
+li $a1, 6 #the y starting coordinate
+lw $a2, ballColor #the color
+li $a3, 15 #the y ending coordinate
+jal DrawVerticalLine
+
 NewGame:
 		
 		# 1 is 0x00000031
@@ -300,18 +306,28 @@ DrawHorizontalLine:
 
 		jr $ra
 		
-# $a0 the y starting coordinate
-# $a1 the y ending coordinate
+# $a0 the x coordinate
+# $a1 the y starting coordinate
 # $a2 the color
-# $a3 the x coordinate
+# $a3 the y ending coordinate
 DrawVerticalLine:
+
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)
 		
-		sub $t0, $a2, $a1
+		sub $t9, $a3, $a1
+		move $t1, $a1
 		
 	VerticalLoop:
 		
+		add $a1, $t1, $t9
+		jal DrawPoint
+		addi $t9, $t9, -1
 		
+		bge $t9, 0, VerticalLoop
 		
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4
 		jr $ra
 		
 #################################################################################
