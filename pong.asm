@@ -449,12 +449,61 @@ NewGame:
 		li $a1, 28 #the y coordinate
 		lw $a2, ballColor
 		jal DrawPoint
+		
+		
 	
-ModeWait:
+SelectMode:
+
+	WinP:	li $a0, 27 #the x coordinate
+		li $a1, 12 #the y starting coordinate
+		lw $a2, ballColor #the color
+		li $a3, 16 #the y ending coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 27 #the x starting coordinate
+		li $a1, 12 #the y coordinate
+		lw $a2, ballColor #the color
+		li $a3, 30 #the x ending coordinate
+		jal DrawHorizontalLine
+		
+		li $a0, 30 #the x coordinate
+		li $a1, 12 #the starting y coordinate
+		lw $a2, ballColor #the color
+		li $a3, 14 #the ending y coordinate
+		jal DrawVerticalLine
+	
+		li $a0, 28 #the starting x coordinate
+		li $a1, 14 #the y coordinate
+		lw $a2, ballColor
+		li $a3, 29 #the ending x coordinate
+		jal DrawHorizontalLine
+		
+	WinOne:	li $a0, 34 #the x coordinate
+		li $a1, 12 #the y starting coordinate
+		lw $a2, ballColor #the color
+		li $a3, 15 #the y ending coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 33
+		li $a1, 13
+		lw $a2, ballColor
+		jal DrawPoint
+		
+		li $a0, 33 #the x starting coordinate
+		li $a1, 16 #the y coordinate
+		lw $a2, ballColor #the color
+		li $a3, 35 #the x ending coordinate
+		jal DrawHorizontalLine
+
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
 		beq $t1, 0x00000031, SetOnePlayerMode # 1 pressed
 		beq $t1, 0x00000032, SetTwoPlayerMode # 2 pressed
-		j ModeWait
+		
+		li $a0, 250	#
+		li $v0, 32	# pause for 10 milisec
+		syscall		#
+		
+		j SelectMode
 		
 SetOnePlayerMode:
 		li $t1, 1
