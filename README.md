@@ -4,7 +4,8 @@ MIPS-PONG
 The age-old game of pong implemented in MIPS assembly.  Please excuse our mess. It's a work in progress!
 
 This is meant to be run in the MARS simulator.  It uses both the Bitmap Dislay and the Keyboard and Display MIMO Simulator tools.
-The MARS simulator had a bug a threading bug involving using multiple tools. A fix was published by the internet user [Confect](https://dtconfect.wordpress.com/2013/02/09/mars-mips-simulator-lockup-hackfix/). We also used Confect's Mips snake game as a learning source.
+
+The MARS simulator had a bug a threading bug involving using multiple tools. A fix was published by the internet user [Confect](https://dtconfect.wordpress.com/2013/02/09/mars-mips-simulator-lockup-hackfix/). We also used Confect's [MIPS snake game](https://dtconfect.wordpress.com/projects/year2/mips-snake-and-primlib/) as a learning source.
 
 ## How To Run
 
@@ -13,11 +14,11 @@ The MARS simulator had a bug a threading bug involving using multiple tools. A f
 3. Go to Run -> Assemble
 4. Go to tools -> Bitmap Display
 5. The Bitmap Display settings should be as follows:
-	Unit Width: 8
-	Unit Height: 8
-	Display Width: 512
-	Display Height: 256
-	Base Address: $gp
+  - Unit Width: 8
+  - Unit Height: 8
+  - Display Width: 512
+  - Display Height: 256
+  - Base Address: $gp
 6. Go to tools -> Keyboard and Display MMIO Simulator
 7. Press connect to MIPS on both of the displays
 8. Go to Run -> Go
