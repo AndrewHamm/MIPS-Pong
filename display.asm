@@ -11,13 +11,197 @@
 	colorTwo:		.word 0x00c00080
 	ballColor:		.word 0x00ffffff
 	backgroundColor:	.word 0x00000000
+	blueColor:		.word 0x0012fff7
 	mode:			.word 0  # 1 denotes 1 Player mode
 					 # 2 Means 2 Player mode
 					 # Room for more...
 
 .text
+leftLines:
+	li $a0, 10 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 14 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 15 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 17 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 10 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 18 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+rightLines:
+	li $a0, 46 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 14 #the y coordinate
+	lw $a2, colorTwo #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 15 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, blueColor #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 17 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 46 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, colorOne #the color
+	li $a3, 54 #the x ending coordinate
+	jal DrawHorizontalLine	
+	
+P:
+	li $a0, 21 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawVerticalLine
+
+	li $a0, 22 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 25 #the x ending coordinate
+	jal DrawHorizontalLine
+
+	li $a0, 25 #the x coordinate
+	li $a1, 14 #the starting y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 16 #the ending y coordinate
+	jal DrawVerticalLine
+
+	li $a0, 22 #the starting x coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 24 #the ending x coordinate
+	jal DrawHorizontalLine
+O:
+	li $a0, 27 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 27 #the x starting coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 31 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 31 #the x coordinate
+	li $a1, 14 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 17 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 27 #the x starting coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 31 #the x ending coordinate
+	jal DrawHorizontalLine
+N:
+	#33 over 13 down.  6 tall
+	li $a0, 33 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawVerticalLine
+
+	li $a0, 34 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 14 #the y ending coordinate
+	jal DrawVerticalLine
+
+	li $a0, 35 #the x coordinate
+	li $a1, 15 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 16 #the y ending coordinate
+	jal DrawVerticalLine
+
+	li $a0, 36
+	li $a1, 17
+	lw $a2, ballColor
+	jal DrawPoint
+
+	li $a0, 37 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawVerticalLine
+	
+G:
+	li $a0, 39 #the x coordinate
+	li $a1, 13 #the y starting coordinate
+	lw $a2, ballColor #the color
+	li $a3, 18 #the y ending coordinate
+	jal DrawVerticalLine
+	
+	li $a0, 40 #the starting x coordinate
+	li $a1, 13 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 43 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 40 #the starting x coordinate
+	li $a1, 18 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 43 #the ending x coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 43
+	li $a1, 17
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 41 #the starting x coordinate
+	li $a1, 16 #the y coordinate
+	lw $a2, ballColor
+	li $a3, 43 #the ending x coordinate
+	jal DrawHorizontalLine
 
 NewGame:
+		
 		# 1 is 0x00000031
 		# 2 is 0x00000032
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
@@ -289,6 +473,56 @@ DrawPoint:
 		sw $a2, ($v0)		# draw the color to the location
 		
 		jr $ra
+
+# $a0 the x starting coordinate
+# $a1 the y coordinate
+# $a2 the color
+# $a3 the x ending coordinate
+DrawHorizontalLine:
+		
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)
+		
+		sub $t9, $a3, $a0
+		move $t1, $a0
+		
+	HorizontalLoop:
+		
+		add $a0, $t1, $t9
+		jal DrawPoint
+		addi $t9, $t9, -1
+		
+		bge $t9, 0, HorizontalLoop
+		
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4
+
+		jr $ra
+		
+# $a0 the x coordinate
+# $a1 the y starting coordinate
+# $a2 the color
+# $a3 the y ending coordinate
+DrawVerticalLine:
+
+		addi $sp, $sp, -4
+   		sw $ra, 0($sp)
+		
+		sub $t9, $a3, $a1
+		move $t1, $a1
+		
+	VerticalLoop:
+		
+		add $a1, $t1, $t9
+		jal DrawPoint
+		addi $t9, $t9, -1
+		
+		bge $t9, 0, VerticalLoop
+		
+		lw $ra, 0($sp)		# put return back
+   		addi $sp, $sp, 4
+   		
+		jr $ra
 		
 #################################################################################
 # AdjustDir  changes the players direction registers depending on the key pressed
@@ -459,15 +693,3 @@ EndGame:
 		sw $zero, P1Score
 		sw $zero, P2Score
 		j NewGame
-	
-				# CURRENTLY NOT USED		
-# $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
-CoordinateToMemAddress:
-		sll $t0, $a1, 6   # multiply y-coordinate by 64 (length of the field)
-		addu $v0, $a0, $t0
-		sll $v0, $v0, 2
-		addu $v0, $v0, $gp
-		nop
-		
-		
-		
