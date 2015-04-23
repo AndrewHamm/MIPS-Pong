@@ -35,11 +35,42 @@ lw $a2, ballColor #the color
 li $a3, 16 #the ending y coordinate
 jal DrawVerticalLine
 
+
 li $a0, 22 #the starting x coordinate
 li $a1, 16 #the y coordinate
 lw $a2, ballColor
 li $a3, 24 #the ending x coordinate
 jal DrawHorizontalLine
+
+#33 over 13 down.  6 tall
+li $a0, 33 #the x coordinate
+li $a1, 13 #the y starting coordinate
+lw $a2, ballColor #the color
+li $a3, 18 #the y ending coordinate
+jal DrawVerticalLine
+
+li $a0, 34 #the x coordinate
+li $a1, 13 #the y starting coordinate
+lw $a2, ballColor #the color
+li $a3, 14 #the y ending coordinate
+jal DrawVerticalLine
+
+li $a0, 35 #the x coordinate
+li $a1, 15 #the y starting coordinate
+lw $a2, ballColor #the color
+li $a3, 16 #the y ending coordinate
+jal DrawVerticalLine
+
+li $a0, 36
+li $a1, 17
+lw $a2, ballColor
+jal DrawPoint
+
+li $a0, 37 #the x coordinate
+li $a1, 13 #the y starting coordinate
+lw $a2, ballColor #the color
+li $a3, 18 #the y ending coordinate
+jal DrawVerticalLine
 
 NewGame:
 		
