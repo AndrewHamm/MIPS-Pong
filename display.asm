@@ -29,11 +29,17 @@ lw $a2, ballColor #the color
 li $a3, 25 #the x ending coordinate
 jal DrawHorizontalLine
 
-li $a0, 25
-li $a1, 14
-lw $a2, ballColor
-li $a3, 16 
+li $a0, 25 #the x coordinate
+li $a1, 14 #the starting y coordinate
+lw $a2, ballColor #the color
+li $a3, 16 #the ending y coordinate
 jal DrawVerticalLine
+
+li $a0, 22 #the starting x coordinate
+li $a1, 16 #the y coordinate
+lw $a2, ballColor
+li $a3, 24 #the ending x coordinate
+jal DrawHorizontalLine
 
 NewGame:
 		
