@@ -17,6 +17,8 @@
 					 # Room for more...
 
 .text
+
+DrawLogo:
 leftLines:
 	li $a0, 10 #the x starting coordinate
 	li $a1, 13 #the y coordinate
@@ -421,12 +423,9 @@ Two:
 	
 	
 NewGame:
-		
-		# 1 is 0x00000031
-		# 2 is 0x00000032
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
-		beq $t1, 0x00000031, SetOnePlayerMode
-		beq $t1, 0x00000032, SetTwoPlayerMode
+		beq $t1, 0x00000031, SetOnePlayerMode # 1 pressed
+		beq $t1, 0x00000032, SetTwoPlayerMode # 2 pressed
 		j NewGame
 		
 SetOnePlayerMode:
@@ -481,9 +480,6 @@ NewRound:
 		move $a1, $s5
 		lw $a2, colorTwo
 		jal DrawPaddle
-		
-# TODO: if we want, we can move the ball every 5 milisec in standby then draw where it is when we come out
-WaitForButton:
 
 		li $a0, 1000	#
 		li $v0, 32	# pause for 10 milisec
