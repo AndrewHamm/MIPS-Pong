@@ -18,7 +18,7 @@
 
 .text
 
-DrawLogo:
+NewGame:
 leftLines:
 	li $a0, 10 #the x starting coordinate
 	li $a1, 13 #the y coordinate
@@ -421,8 +421,6 @@ Two:
 	lw $a2, ballColor
 	jal DrawPoint
 	
-	
-NewGame:
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
 		beq $t1, 0x00000031, SetOnePlayerMode # 1 pressed
 		beq $t1, 0x00000032, SetTwoPlayerMode # 2 pressed
@@ -903,8 +901,7 @@ PTwoRoundLoss:
 # Ends the game, wrapping up the process
 # In the future, we want this to display the start screen/winner screen	
 EndGame:
-		move $a2, $t1
-		jal DrawScore
+		jal ClearBoard
 		sw $zero, 0xFFFF0004
 		sw $zero, P1Score
 		sw $zero, P2Score
