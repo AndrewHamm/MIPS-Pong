@@ -916,6 +916,7 @@ POneRoundLoss:
 		sw $t2, xDir
 		
 		li $a3, 54
+		sw $zero, 0xFFFF0004
 		beq $t1, 10, EndGame
 		
 		j NewRound
@@ -930,6 +931,7 @@ PTwoRoundLoss:
 		sw $t2, xDir
 		
 		li $a3, 1
+		sw $zero, 0xFFFF0004
 		beq $t1, 10, EndGame
 		j NewRound
 	
@@ -937,7 +939,6 @@ PTwoRoundLoss:
 # In the future, we want this to display the start screen/winner screen	
 EndGame:
 		jal ClearBoard
-		sw $zero, 0xFFFF0004
 		
 		lw $t0, P1Score
 		bne $t0, 10, WinTwo
@@ -1023,13 +1024,24 @@ EndGame:
 		li $a3, 29 #the ending x coordinate
 		jal DrawHorizontalLine
 		
-		li $a0, 750	#
-		li $v0, 32	# pause for 10 milisec
+		li $a0, 1500	#
+		li $v0, 32	# pause for 1500 milisec
+		syscall		#
+		
+		jal ClearBoard
+		
+		lw $t0, 0xFFFF0004
+		bne $t0, $zero, Reset
+		
+		li $a0, 700	#
+		li $v0, 32	# pause for 700 milisec
 		syscall		#
 		
 		j EndGame
 		
-Reset:		sw $zero, P1Score
+Reset:		
+		sw $zero, P1Score
 		sw $zero, P2Score
+		sw $zero, 0xFFFF0004
 		
 		j NewGame
