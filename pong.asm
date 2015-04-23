@@ -1023,25 +1023,29 @@ EndGame:
 		lw $a2, ballColor
 		li $a3, 29 #the ending x coordinate
 		jal DrawHorizontalLine
+
+		li $a0, 100 	#
+		li $v0, 32	# Make sure they see the writing for a little bit
+		syscall		#
 		
-		li $a0, 1500	#
+		sw $zero, 0xFFFF0000
+
+WaitForReset:		
+		li $a0, 10 	#
 		li $v0, 32	# pause for 1500 milisec
 		syscall		#
 		
-		jal ClearBoard
+		lw $t0, 0xFFFF0000
+		beq $t0, $zero, WaitForReset
 		
-		lw $t0, 0xFFFF0004
-		bne $t0, $zero, Reset
-		
-		li $a0, 700	#
-		li $v0, 32	# pause for 700 milisec
-		syscall		#
-		
-		j EndGame
+		j Reset
 		
 Reset:		
 		sw $zero, P1Score
 		sw $zero, P2Score
+		sw $zero, 0xFFFF0000
 		sw $zero, 0xFFFF0004
+		
+		jal ClearBoard
 		
 		j NewGame
