@@ -269,6 +269,44 @@ RinOr:
 	li $a1, 27
 	lw $a2, backgroundColor
 	jal DrawPoint
+	
+Two:
+	li $a0, 48 #the x starting coordinate
+	li $a1, 29 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 51 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 49 #the x starting coordinate
+	li $a1, 25 #the y coordinate
+	lw $a2, ballColor #the color
+	li $a3, 50 #the x ending coordinate
+	jal DrawHorizontalLine
+	
+	li $a0, 50
+	li $a1, 29
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 49
+	li $a1, 28
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 50
+	li $a1, 27
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 51
+	li $a1, 26
+	lw $a2, ballColor
+	jal DrawPoint
+	
+	li $a0, 48
+	li $a1, 26
+	lw $a2, ballColor
+	jal DrawPoint
 
 NewGame:
 		
