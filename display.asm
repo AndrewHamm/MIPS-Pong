@@ -17,6 +17,8 @@
 					 # Room for more...
 
 .text
+
+NewGame:
 leftLines:
 	li $a0, 10 #the x starting coordinate
 	li $a1, 13 #the y coordinate
@@ -200,8 +202,6 @@ G:
 	li $a3, 43 #the ending x coordinate
 	jal DrawHorizontalLine
 
-NewGame:
-<<<<<<< HEAD
 leftLines:
 	li $a0, 10 #the x starting coordinate
 	li $a1, 13 #the y coordinate
@@ -633,15 +633,11 @@ Two:
 	lw $a2, ballColor
 	jal DrawPoint
 	
-=======
-		
-		# 1 is 0x00000031
-		# 2 is 0x00000032
->>>>>>> master
+ModeWait:
 		lw $t1, 0xFFFF0004		# check to see which key has been pressed
 		beq $t1, 0x00000031, SetOnePlayerMode # 1 pressed
 		beq $t1, 0x00000032, SetTwoPlayerMode # 2 pressed
-		j NewGame
+		j ModeWait
 		
 SetOnePlayerMode:
 		li $t1, 1
@@ -1122,17 +1118,4 @@ EndGame:
 		sw $zero, 0xFFFF0004
 		sw $zero, P1Score
 		sw $zero, P2Score
-<<<<<<< HEAD
 		j NewGame
-	
-				# CURRENTLY NOT USED		
-# $a0 contains x position, $a1 contains y position. Outputs memory address in $v0
-CoordinateToMemAddress:
-		sll $t0, $a1, 6   # multiply y-coordinate by 64 (length of the field)
-		addu $v0, $a0, $t0
-		sll $v0, $v0, 2
-		addu $v0, $v0, $gp
-		nop
-=======
-		j NewGame
->>>>>>> master
