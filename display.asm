@@ -17,11 +17,23 @@
 
 .text
 
- li $a0, 5 #the x coordinate
-li $a1, 7 #the y starting coordinate
+li $a0, 21 #the x coordinate
+li $a1, 13 #the y starting coordinate
 lw $a2, ballColor #the color
-li $a3, 15 #the y ending coordinate
+li $a3, 18 #the y ending coordinate
+jal DrawVerticalLine
+
+li $a0, 22 #the x starting coordinate
+li $a1, 13 #the y coordinate
+lw $a2, ballColor #the color
+li $a3, 25 #the x ending coordinate
 jal DrawHorizontalLine
+
+li $a0, 25
+li $a1, 14
+lw $a2, ballColor
+li $a3, 16 
+jal DrawVerticalLine
 
 NewGame:
 		
@@ -525,6 +537,3 @@ CoordinateToMemAddress:
 		sll $v0, $v0, 2
 		addu $v0, $v0, $gp
 		nop
-		
-		
-		
