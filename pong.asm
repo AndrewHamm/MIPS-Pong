@@ -190,16 +190,8 @@ NewGame:
 		li $a3, 27
 		jal DrawVerticalLine
 		
-		li $a1, 26
-		lw $a2, backgroundColor
-		jal DrawPoint
-		
-		li $a0, 19
-		li $a1, 27
-		jal DrawPoint
-		
 		li $a0, 22
-		lw $a2, ballColor
+		li $a1, 27
 		jal DrawPoint
 		
 		li $a1, 29
@@ -233,7 +225,6 @@ NewGame:
 		
 		li $a0, 34
 		li $a1, 26
-		lw $a2, ballColor
 		jal DrawPoint
 		
 		li $a1, 29
@@ -249,18 +240,9 @@ NewGame:
 		li $a0, 44
 		li $a3, 27
 		jal DrawVerticalLine
-	
-		li $a1, 26
-		lw $a2, backgroundColor
-		jal DrawPoint
-	
-		li $a0, 45
-		li $a1, 27
-		jal DrawPoint
 			
 		li $a0, 49
 		li $a1, 25
-		lw $a2, ballColor
 		li $a3, 50
 		jal DrawHorizontalLine
 	
@@ -301,6 +283,24 @@ NewGame:
 	
 		li $a0, 30
 		li $a1, 28
+		jal DrawPoint
+		
+		li $a1, 26
+		lw $a2, backgroundColor
+		jal DrawPoint
+		
+		li $a0, 19
+		li $a1, 27
+		jal DrawPoint
+		
+		li $a0, 45
+		jal DrawPoint
+		
+		li $a0, 44
+		li $a1, 26
+		jal DrawPoint
+		
+		li $a0, 18
 		jal DrawPoint
 		
 SelectMode:
