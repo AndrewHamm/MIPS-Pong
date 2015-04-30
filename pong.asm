@@ -848,7 +848,7 @@ PaddleHit:
 		
 		li $a0, 80		# Make the sound when the ball hits the paddle
 		li $a1, 80
-		li $a2, 121
+		li $a2, 32
 		li $a3, 127
 		li $v0, 31
 		syscall
@@ -958,7 +958,7 @@ POneRoundLoss:
 		sw $zero, 0xFFFF0004  # Zeros the key press 
 		beq $t1, 10, EndGame
 		
-		j NewRound
+		j PlayPointSound
 PTwoRoundLoss:	
 		# Increment player 1's score
 		lw $t1, P1Score
@@ -972,7 +972,17 @@ PTwoRoundLoss:
 		li $a3, 1
 		sw $zero, 0xFFFF0004 # Zeros the key press
 		beq $t1, 10, EndGame
-		j NewRound
+
+PlayPointSound:
+		# play a sound
+		li $a0, 80		# Make the sound when the ball hits the paddle
+		li $a1, 80
+		li $a2, 121
+		li $a3, 127
+		li $v0, 31
+		syscall
+   		
+   		j NewRound
 	
 # Ends the game, wrapping up the process
 EndGame:
