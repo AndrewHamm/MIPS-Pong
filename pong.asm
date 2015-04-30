@@ -833,6 +833,21 @@ NoPaddleCollision:
 		j CheckHorizontalHit
 		
 PaddleHit: 
+		addi $sp, $sp, -8
+   		sw $a0, 0($sp)   	# arguments on stack
+   		sw $a1, 4($sp)
+		
+		li $a0, 80
+		li $a1, 80
+		li $a2, 121
+		li $a3, 127
+		li $v0, 31
+		syscall
+		
+   		lw $a0, 0($sp)   	# Puts arguments back in their registers for later use
+   		lw $a1, 4($sp)
+   		addi $sp, $sp, 8
+		
 		lw $t4, Level			# set the compSpeed here so it never misses the first ball
 		sw $t4, compSpeed
 		beq $t3, 0, tophigh
