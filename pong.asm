@@ -906,6 +906,22 @@ CheckHorizontalHit:
 		bne $s7, 0, NoCollision
 		
 HorizontalWallHit: 
+		# play a sound
+		addi $sp, $sp, -8
+   		sw $a0, 0($sp)   	# arguments on stack
+   		sw $a1, 4($sp)
+		
+		li $a0, 80		# Make the sound when the ball hits the paddle
+		li $a1, 80
+		li $a2, 123
+		li $a3, 127
+		li $v0, 31
+		syscall
+		
+   		lw $a0, 0($sp)   	# Puts arguments back in their registers for later use
+   		lw $a1, 4($sp)
+   		addi $sp, $sp, 8
+   		
 		# change y direction if y-count=1 (prevents it from switching until y is about to change)
 		bgt $s3, 1, NoCollision
 		lw $t4, yDir
