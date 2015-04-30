@@ -403,7 +403,7 @@ startAi:
 		lw $t0, compSpeed 	# reset compCount
 		sw $t0, compCount
 		addi $t1, $s5, 2	# calculate the middle of the paddle
-		blt $t1, $s7, goDown	# if ballx above paddlemid, dir = 0x01000000
+		blt $t1, $s7, goDown	# if bally above paddlemid, dir = 0x01000000
 		li $s1, 0x01000000
 		j endAi	
 goDown: 
