@@ -13,7 +13,7 @@
 	backgroundColor:	.word 0x00000000
 	blueColor:		.word 0x0012fff7
 	mode:			.word 0  # 1 denotes 1 Player mode
-					 # 2 Means 2 Player mode
+					 # 2 denotes 2 Player mode
 					 # Room for more...
 
 .text
@@ -458,10 +458,10 @@ SelectMode:
 		beq $t1, 0x00000032, SetTwoPlayerMode # 2 pressed
 		
 		li $a0, 250	#
-		li $v0, 32	# pause for 10 milisec
+		li $v0, 32	# pause for 250 milisec
 		syscall		#
 		
-		j SelectMode
+		j SelectMode    # Jump back to the top of the wait loop
 		
 SetOnePlayerMode:
 		li $t1, 1
@@ -474,17 +474,23 @@ BeginGame:
 		
 		
 
-# s0 stores p1dir, s1 stores p2 dir, s2 stores balls x-velocity-count, s3 stores balls y-velocity-count, s4 stores paddle one's position, 
-# s5 stores paddle two's position, s6 stores the balls x position, s7 stores the balls y position
+# $s0 stores p1 dir
+# $s1 stores p2 dir
+# $s2 stores balls x-velocity-count
+# $s3 stores balls y-velocity-count
+# $s4 stores paddle one's position, 
+# $s5 stores paddle two's position
+# $s6 stores the balls x position
+# $s7 stores the balls y position
 NewRound:
 
+		# Initialize all the regesters for a new iteration of the gameplay loop
 		li $t0, 1
 		li $t1, -1
 		sw $t0, ySpeed
 		sw $t1, yDir
-		li $t2, 0
-		sw $t2, compSpeed 	# reset compCount and compSpeed to 0 for first collision
-		sw $t2, compCount
+		sw $zero, compSpeed 	# reset compCount and compSpeed to 0 for first collision
+		sw $zero, compCount
 		
 		li $s0, 0 	# 0x01000000 up; 0x02000000 down; 0 stay
 		li $s1, 0	# 0x01000000 up; 0x02000000 down; 0 stay
@@ -504,8 +510,6 @@ NewRound:
 		li $a3, 54
 		jal DrawScore
 		
-		li $a3, 0
-		
 		li $a0, 13
 		move $a1, $s4
 		lw $a2, colorOne
@@ -517,7 +521,7 @@ NewRound:
 		jal DrawPaddle
 
 		li $a0, 1000	#
-		li $v0, 32	# pause for 10 milisec
+		li $v0, 32	# pause for 1 second
 		syscall		#
 
 DrawObjects:
@@ -539,7 +543,7 @@ DrawObjects:
 		lw $a2, colorTwo
 startAi:
 		lw $t1, mode
-		bne $t1, 1, endAi
+		bne $t1, 1, endAi 	# branches past the Ai if 2 player mode
 		
 		lw $t0, compCount 	
 		addi $t0, $t0, -1	# decrement compCount
@@ -552,10 +556,8 @@ startAi:
 		li $s1, 0x01000000
 		j endAi	
 goDown: 
-		# else dir = 0x02000000
 		li $s1, 0x02000000
 endAi:
-		
 		move $a3, $s1
 		jal DrawPaddle
 		move $s5, $a1	# a1 has the new top position stored
@@ -564,7 +566,6 @@ endAi:
 		
 # Wait and read buttons
 Begin_standby:	
-		# TODO: Store this somewhere besides $t0
 		li $t0, 0x00000002			# load 25 into the counter for a ~50 milisec standby
 	
 Standby:
@@ -584,8 +585,12 @@ Standby:
 EndStandby:		
 		j DrawObjects
 		
-# $a0 contains the paddles x position, $a1 contains paddles y-top position, $a2 contains paddle color, $a3 contains the direction
-# $t0 is the loop counter, $t1 is the current y coordinate, the x coordinate does not change
+# $a0 contains the paddles x position
+# $a1 contains paddles y-top position
+# $a2 contains paddle color
+# $a3 contains the direction
+# $t0 is the loop counter
+# $t1 is the current y coordinate, the x coordinate does not change
 # after completed $a1 "returns" aka has stored the new y-top position, $a3 "returns" the direction
 # careful to make sure nothing inbetween alters these  $a registers
 DrawPaddle:
@@ -646,10 +651,11 @@ DrawPaddle:
 	EndPLoop:		
 		jr $ra
 
-# $a2 contains the score of the player and $a3 contains the column of the leftmost scoring dot.
+# $a2 contains the score of the player
+# $a3 contains the column of the leftmost scoring dot.
 # Using this information, draws along the top of the screen to display a player's score	
 DrawScore:
-		addi $sp, $sp, -12
+		addi $sp, $sp, -12	# Stores regiester values to the stack
    		sw $ra, 0($sp)
    		sw $s2, 4($sp)
    		sw $a2, 8($sp)
@@ -657,7 +663,7 @@ DrawScore:
    		move $s2, $a2
    		lw $a2, ballColor
    		ble $s2, 5, DrawScoreRow1
-   	DrawScoreRow2:
+   	DrawScoreRow2:			# Draws any score values along the second row
    	
    		sub $t1, $s2, 6
    		sll $t1, $t1, 1
@@ -669,7 +675,7 @@ DrawScore:
    		
    		bge $s2, 6, DrawScoreRow2
    		
-	DrawScoreRow1:
+	DrawScoreRow1:			# Draws any score values along the first row
 		beq $s2, $zero, DrawScoreEnd
 		sub $t1, $s2, 1
 		sll $t1, $t1, 1
@@ -682,14 +688,15 @@ DrawScore:
    		j DrawScoreRow1
 	
 	DrawScoreEnd:
-		lw $ra, 0($sp)		# put return back
+		lw $ra, 0($sp)		# restores register values from the stack
 		lw $s2, 4($sp)
 		lw $a2, 8($sp)
    		addi $sp, $sp, 12
 		
 		jr $ra
 		
-# $a0 contains x position, $a1 contains y position	
+# $a0 contains x position
+# $a1 contains y position	
 MoveBall:		
 		# draw over the last point
 		lw $a2, backgroundColor
@@ -775,7 +782,7 @@ DrawVerticalLine:
    		
 		jr $ra
 		
-#################################################################################
+
 # AdjustDir  changes the players direction registers depending on the key pressed
 AdjustDir: 
 		lw $a0, 0xFFFF0004		# Load button pressed
@@ -804,7 +811,7 @@ AdjustDir_none:
 						# Do nothing
 AdjustDir_done:
 		jr $ra				# Return
-#################################################################################
+
 # Check for collisions and react accordingly
 # $a0 contains balls x-pos $a1 contains balls y-pos
 # first check if it is a normal collision
@@ -839,7 +846,7 @@ PaddleHit:
    		sw $a0, 0($sp)   	# arguments on stack
    		sw $a1, 4($sp)
 		
-		li $a0, 80
+		li $a0, 80		# Make the sound when the ball hits the paddle
 		li $a1, 80
 		li $a2, 121
 		li $a3, 127
@@ -850,7 +857,7 @@ PaddleHit:
    		lw $a1, 4($sp)
    		addi $sp, $sp, 8
 		
-		lw $t4, Level			# set the compSpeed here so it never misses the first ball
+		lw $t4, Level		# set the compSpeed here so it never misses the first ball
 		sw $t4, compSpeed
 		beq $t3, 0, tophigh
 		beq $t3, 1, topmid
@@ -908,11 +915,10 @@ HorizontalWallHit:
 NoCollision:
 		jr $ra
 
-#################################################################################
-
+# Makes the entire bitmap display the background color (black)
 ClearBoard:
 		lw $t0, backgroundColor
-		li $t1, 8192
+		li $t1, 8192 # The number of pixels in the display
 	StartCLoop:
 		subi $t1, $t1, 4
 		addu $t2, $t1, $gp
@@ -933,7 +939,7 @@ POneRoundLoss:
 		sw $t2, xDir
 		
 		li $a3, 54
-		sw $zero, 0xFFFF0004
+		sw $zero, 0xFFFF0004  # Zeros the key press 
 		beq $t1, 10, EndGame
 		
 		j NewRound
@@ -948,12 +954,11 @@ PTwoRoundLoss:
 		sw $t2, xDir
 		
 		li $a3, 1
-		sw $zero, 0xFFFF0004
+		sw $zero, 0xFFFF0004 # Zeros the key press
 		beq $t1, 10, EndGame
 		j NewRound
 	
 # Ends the game, wrapping up the process
-# In the future, we want this to display the start screen/winner screen	
 EndGame:
 		jal ClearBoard
 		
@@ -1042,14 +1047,14 @@ EndGame:
 		jal DrawHorizontalLine
 
 		li $a0, 100 	#
-		li $v0, 32	# Make sure they see the writing for a little bit
+		li $v0, 32	# Pause for 100 milisec
 		syscall		#
 		
 		sw $zero, 0xFFFF0000
 
 WaitForReset:		
 		li $a0, 10 	#
-		li $v0, 32	# pause for 1500 milisec
+		li $v0, 32	# pause for 10 milisec
 		syscall		#
 		
 		lw $t0, 0xFFFF0000
@@ -1060,7 +1065,7 @@ WaitForReset:
 Reset:		
 		sw $zero, P1Score
 		sw $zero, P2Score
-		sw $zero, 0xFFFF0000
+		sw $zero, 0xFFFF0000	# Zeros the keypress words in memory
 		sw $zero, 0xFFFF0004
 		
 		jal ClearBoard
