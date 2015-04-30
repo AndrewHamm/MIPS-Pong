@@ -911,13 +911,6 @@ HorizontalWallHit:
    		sw $a0, 0($sp)   	# arguments on stack
    		sw $a1, 4($sp)
 		
-		li $a0, 80		# Make the sound when the ball hits the paddle
-		li $a1, 80
-		li $a2, 123
-		li $a3, 127
-		li $v0, 31
-		syscall
-		
    		lw $a0, 0($sp)   	# Puts arguments back in their registers for later use
    		lw $a1, 4($sp)
    		addi $sp, $sp, 8
@@ -975,8 +968,8 @@ PTwoRoundLoss:
 
 PlayPointSound:
 		# play a sound
-		li $a0, 80		# Make the sound when the ball hits the paddle
-		li $a1, 80
+		li $a0, 80		# Make the sound when a point is scored
+		li $a1, 300
 		li $a2, 121
 		li $a3, 127
 		li $v0, 31
