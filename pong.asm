@@ -150,6 +150,30 @@ NewGame:
 		li $a3, 29 #the y ending coordinate
 		jal DrawVerticalLine
 		
+		li $a0, 17 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 19 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 21 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 39 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 41 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 43 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 45 #the x coordinate
+		jal DrawVerticalLine
+		
+		li $a0, 35 #the x coordinate
+		jal DrawVerticalLine
+		
 		li $a0, 12 #the x starting coordinate
 		li $a1, 25 #the y coordinate
 		li $a3, 15 #the x ending coordinate
@@ -166,19 +190,11 @@ NewGame:
 		jal DrawHorizontalLine
 	
 	RinPress:
-		li $a0, 17 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 29 #the y ending coordinate
-		jal DrawVerticalLine
+		
 	
 		li $a0, 18 #the x coordinate
 		li $a1, 25 #the y starting coordinate
 		li $a3, 27 #the y ending coordinate
-		jal DrawVerticalLine
-		
-		li $a0, 19 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 29 #the y ending coordinate
 		jal DrawVerticalLine
 		
 		li $a0, 18
@@ -191,14 +207,10 @@ NewGame:
 		jal DrawPoint
 		
 	ess:
-		li $a0, 21 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		lw $a2, ballColor #the color
-		li $a3, 29 #the y ending coordinate
-		jal DrawVerticalLine
 		
 		li $a0, 22 #the starting x coordinate
 		li $a1, 29 #the y coordinate
+		lw $a2, ballColor
 		jal DrawPoint
 		
 		li $a0, 22 #the starting x coordinate
@@ -239,10 +251,6 @@ NewGame:
 	
 		
 	One:
-		li $a0, 35 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 28 #the y ending coordinate
-		jal DrawVerticalLine
 		
 		li $a0, 34
 		li $a1, 26
@@ -255,15 +263,6 @@ NewGame:
 		jal DrawHorizontalLine
 		
 	OinOr:
-		li $a0, 39 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 29 #the y ending coordinate
-		jal DrawVerticalLine
-	
-		li $a0, 41 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 29 #the y ending coordinate
-		jal DrawVerticalLine	
 		
 		li $a0, 40
 		li $a1, 25
@@ -274,19 +273,10 @@ NewGame:
 		jal DrawPoint
 	
 	RinOr:
-		li $a0, 43 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 29 #the y ending coordinate
-		jal DrawVerticalLine
 	
 		li $a0, 44 #the x coordinate
 		li $a1, 25 #the y starting coordinate
 		li $a3, 27 #the y ending coordinate
-		jal DrawVerticalLine
-	
-		li $a0, 45 #the x coordinate
-		li $a1, 25 #the y starting coordinate
-		li $a3, 29 #the y ending coordinate
 		jal DrawVerticalLine
 	
 		li $a0, 44
