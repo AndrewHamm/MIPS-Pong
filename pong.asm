@@ -19,6 +19,8 @@
 .text
 
 NewGame:
+	jal ClearBoard
+
 	leftLines:
 		li $a0, 10 #the x starting coordinate
 		li $a1, 13 #the y coordinate
