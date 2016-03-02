@@ -7,6 +7,11 @@ This is meant to be run in the MARS simulator.  It uses both the Bitmap Dislay a
 
 The MARS simulator had a bug a threading bug involving using multiple tools. A fix was published by the internet user [Confect](https://dtconfect.wordpress.com/2013/02/09/mars-mips-simulator-lockup-hackfix/). We also used Confect's [MIPS snake game](https://dtconfect.wordpress.com/projects/year2/mips-snake-and-primlib/) as a learning source.
 
+## Demo
+
+![Gif of Gameplay]
+(https://raw.githubusercontent.com/AndrewHamm/MIPS-Pong/master/GamePlay.gif)
+
 ## How To Run
 
 1. Open the Mars .jar file from our repo.
@@ -31,8 +36,3 @@ For 2 player press 2
 
 Player 1 moves using the A and Z keys.
 Player 2 moves using the K and M keys.
-
-## Demo
-
-![Gif of Gameplay]
-(https://raw.githubusercontent.com/AndrewHamm/MIPS-Pong/master/GamePlay.gif)
