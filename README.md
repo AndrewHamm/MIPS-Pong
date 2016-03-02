@@ -31,3 +31,8 @@ For 2 player press 2
 
 Player 1 moves using the A and Z keys.
 Player 2 moves using the K and M keys.
+
+## Demo
+
+![Gif of Gameplay]
+(https://github.com/AndrewHamm/MIPS-Pong/master/GamePlay.gif)
