@@ -35,4 +35,4 @@ Player 2 moves using the K and M keys.
 ## Demo
 
 ![Gif of Gameplay]
-(https://github.com/AndrewHamm/MIPS-Pong/master/GamePlay.gif)
+(https://raw.githubusercontent.com/AndrewHamm/MIPS-Pong/master/GamePlay.gif)
